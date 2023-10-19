@@ -1,0 +1,562 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;1,400&family=Source+Sans+3:ital,wght@0,400;0,700;1,600&display=swap');
+
+:root {
+  --color2: #0c1125;
+  --color3: hsl(228, 32%, 15%);
+  --color4: #857555;
+  --textColor: white;
+  --backGround: #6D7484;
+  /* --mainColor: #897245; */
+  --edit: #00C6C0;
+  --info: #638CF6;
+  --delete: #ff1800;
+  --mainColor: #D2A517;
+  --backGround2: #EAEAEA;
+}
+
+/* BARRA DE ROLAGEM */
+::-webkit-scrollbar {
+  width: 7px;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--mainColor);
+  border-radius: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: var(--color3)
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--color4)
+}
+
+body {
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
+}
+
+ul {
+  margin: 0;
+  list-style: none;
+  padding: 0;
+}
+
+textarea,
+input {
+  font-family: 'Roboto', sans-serif;
+}
+
+.body {
+  height: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  background-color: var(--backGround);
+}
+
+.body>div {
+  display: flex;
+  flex: 1;
+  height: 100%;
+}
+
+header {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding-left: 26px;
+  padding-right: 26px;
+  background-color: var(--color2);
+  color: var(--textColor);
+  font-size: 24px;
+  height: 50px;
+}
+
+header div {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  justify-content: center;
+}
+
+header .left {
+  justify-content: flex-start;
+  cursor: pointer;
+}
+
+header .right {
+  font-size: 16px;
+  justify-content: flex-end;
+  height: 100%;
+}
+
+header .right button {
+  background-color: var(--mainColor);
+  border: none;
+  outline: none;
+  cursor: pointer;
+  width: 18%;
+  height: 50%;
+  border-radius: 2px;
+  color: white;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+
+.sidebar {
+  max-width: 250px;
+  flex: 1;
+  background-color: var(--color3);
+  border-right: 2px solid var(--mainColor);
+  color: var(--textColor);
+  font-size: 18px;
+}
+
+.sidebar div {
+  display: flex;
+}
+
+.sidebar .sidebarLinks {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 15px;
+  padding: 15px;
+  cursor: pointer;
+  transition: ease-in-out 0.2s;
+  background: linear-gradient(to left, transparent 50%, var(--mainColor) 50%) right;
+  background-size: 200% 100%;
+  color: white;
+  text-decoration: none;
+  flex: 1;
+}
+
+.sidebar .sidebarLinks:hover {
+  background-position: left;
+}
+
+.sidebar .sidebarLinks.active {
+  background-position: left;
+}
+
+.sidebar div svg {
+  font-size: 22px;
+}
+
+.container {
+  flex: 2;
+  display: flex;
+  justify-content: center;
+}
+
+.containerContent {
+  flex: 1;
+  max-width: 1150px;
+  margin: 30px;
+  border-radius: 30px;
+  display: flex;
+  flex-direction: column;
+}
+
+.containerContent>* {
+  padding-left: 14px;
+  padding-right: 14px;
+}
+
+.contentHeader {
+  height: 50px;
+  background-color: var(--mainColor);
+  border-radius: 2px 2px 0 0;
+  font-size: 20px;
+  font-weight: 500;
+  color: white;
+  display: flex;
+  align-items: center;
+  margin: 0;
+}
+
+.contentBody {
+  background-color: var(--backGround2);
+  height: auto;
+  border-radius: 0 0 2px 2px;
+  padding-top: 24px;
+  padding-bottom: 24px
+}
+
+
+.formContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.form-field {
+  width: 80%;
+}
+
+.form-field input,
+.form-field textarea,
+.form-field select {
+  width: 100%;
+  background-color: transparent;
+  color: var(--color3);
+  outline: none;
+  border: none;
+  border-bottom: 2px solid var(--color2);
+  margin-top: 5px;
+  font-size: 20px;
+  padding-left: 5px;
+  transition: 0.3s ease-in-out;
+  box-sizing: border-box;
+  white-space: pre-wrap;
+  font-weight: 400;
+}
+
+.form-field .date {
+  gap: 10px;
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+.form-field .date::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+}
+
+.form-field textarea {
+  box-sizing: border-box;
+  /* Inclui padding e borda na largura total */
+  resize: none;
+  /* Impede a redimensionabilidade */
+  overflow-y: hidden;
+}
+
+.form-field input:hover,
+.form-field input:focus,
+.form-field textarea:focus,
+.form-field textarea:hover {
+  border-bottom: 2px solid var(--mainColor);
+}
+
+.form-field p {
+  font-size: 24px;
+  margin: 0;
+  font-weight: 500;
+}
+
+.customInput label {
+  cursor: pointer;
+  border-color: #80bdff;
+  padding: 0.375rem 0.75rem;
+  box-sizing: border-box;
+  width: 100%;
+  height: 36px;
+  display: flex;
+  border-bottom: 2px solid var(--color2);
+  align-items: center;
+  margin-bottom: 1px;
+  padding-left: 5px;
+  font-weight: 500;
+  padding-bottom: 12px;
+  margin-top: 10px;
+  gap: 10px;
+  transition: 0.2s ease-in-out;
+}
+
+.customInput label:hover {
+  border-color: var(--mainColor);
+}
+
+.customInput label p,
+.customInput label span {
+  font-size: 16px;
+  /* border-radius: 3px;
+  border: 1px solid black; */
+  padding: 5px;
+}
+
+.customInput label span {
+  border-radius: 3px;
+  border: 3px solid var(--color3);
+  /* color: var(--textColor); */
+  background-color: var(--color3);
+  color: white;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.customInput label span:hover {
+  color: var(--mainColor);
+}
+
+.customInput input {
+  display: none;
+  width: 100%;
+}
+
+.send-button {
+  border: none;
+  background-color: var(--mainColor);
+  border-radius: 3px;
+  width: 40%;
+  height: 40px;
+  margin-bottom: 40px;
+  font-size: 24px;
+  color: white;
+  cursor: pointer;
+  transition: ease-in-out 0.3s;
+}
+
+.send-button:hover {
+  color: var(--mainColor);
+  background-color: var(--color2);
+}
+
+/* Listas */
+.listContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.listContainer li {
+  border: 3px solid var(--color2);
+  border-radius: 8px;
+  background-color: white;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.listContainer li h2 {
+  border-bottom: 2px solid var(--color2);
+}
+
+.listContainer li span,
+p,
+h2 {
+  margin: 0;
+}
+
+
+.listContainer li>div {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.listContainer li>div>div {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  border-bottom: 1px solid var(--color2);
+  font-size: 18px;
+}
+
+.listContainer li>div span {
+  font-weight: 500;
+}
+
+.listContainer li div.buttonContainer {
+  display: flex;
+  flex-direction: row;
+}
+
+.buttonContainer button {
+  display: flex;
+  color: var(--color2);
+  height: 30px;
+  display: flex;
+  align-items: center;
+  border: none;
+  outline: none;
+  border-radius: 3px;
+  font-size: 16px;
+  cursor: pointer;
+  font-weight: bold;
+  color: white;
+  padding: 10px;
+  gap: 5px;
+  justify-content: center;
+  transition: 0.2s ease-in-out;
+}
+
+.buttonContainer button:hover {
+  background-color: var(--color2);
+}
+
+.buttonContainer.center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.buttonContainer .edit {
+  background-color: var(--edit);
+}
+
+.buttonContainer .delete {
+  background-color: var(--delete);
+}
+
+.buttonContainer .info {
+  background-color: var(--info);
+}
+
+
+/* MODAIS */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  /* Cor de fundo e opacidade */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal {
+  border: 3px solid var(--color3);
+  background: rgb(255, 255, 255);
+  overflow: auto;
+  border-radius: 4px;
+  outline: none;
+  width: 100%;
+  max-width: 1150px;
+}
+
+.modal h2 {
+  background-color: var(--mainColor);
+  color: white;
+  height: 40px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modalResultado {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.modalResultado p {
+  margin-bottom: 20px;
+  font-weight: 500;
+  font-size: 24px;
+}
+
+.modalResultado svg {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 5px 10px;
+  cursor: pointer;
+  font-size: 30px;
+  transition: 0.2s ease-in-out;
+}
+
+.modalResultado svg:hover {
+  color: var(--mainColor);
+}
+
+.modal-item {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.modal-item>svg {
+  position: absolute;
+  right: 20px;
+  top: 5px;
+  font-size: 26px;
+  cursor: pointer;
+}
+
+.modal-item>svg:hover {
+  color: white;
+}
+
+.modal-item>h2 {
+  text-align: center;
+}
+
+.licitContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  padding: 20px;
+}
+
+.licitContainer>div {
+  text-align: left;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.licitContainer>div span {
+  font-weight: 500;
+  font-size: 22px;
+}
+
+.licitContainer>div p {
+  font-weight: 400;
+  font-size: 18px;
+  border-bottom: 2px solid var(--color2);
+}
+
+.licitContainer .form-field p {
+  font-size: 22px;
+  border-bottom: none;
+  font-weight: 500;
+}
+
+.licitContainer .form-field textarea,
+.licitContainer .form-field input {
+  font-weight: 400;
+  font-size: 18px
+}
+
+.licitContainer a {
+  outline: none;
+  text-decoration: none;
+  color: white;
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+  background-color: var(--color2);
+  border-radius: 4px;
+  cursor: pointer;
+  padding: 7px 10px 10px 10px;
+  box-sizing: border-box;
+  width: 100%;
+  align-items: baseline;
+  font-weight: 500;
+  margin-top: 10px;
+  gap: 10px;
+  transition: 0.2s ease-in-out;
+}
+
+.licitContainer a:hover {
+  color: var(--mainColor);
+}
+
+.licitContainer a svg {
+  font-size: 18px;
+}
