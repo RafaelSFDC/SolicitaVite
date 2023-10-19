@@ -1,20 +1,24 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Modal from 'react-modal';
 import { AiFillCloseSquare, AiFillDelete, AiOutlineDownload } from 'react-icons/ai';
 import { FaDownload } from "react-icons/fa";
 
 import { deleteDocuments, updateDocument } from '../FirebaseConfig';
 import { Link } from 'react-router-dom';
+import SelectClient from '../components/SelectClient';
+import Spinner from '../components/Spinner';
 
 Modal.setAppElement('#root'); // Configura o elemento raiz para o modal
 
-const LicitationInfoModal = ({ isOpen, type, value, onClose, onDelete, onUpdate }) => {
+const LicitationInfoModal = ({ isOpen, type, value, onClose, }) => {
+    const [loading, setLoading] = useState(false);
     if (!value) {
         return null; // Retorna null se value não existir
     }
     const data = value
     const info = data.result
     const id = data.id
+
     function convertDate(createdAt) {
         if (!createdAt || !createdAt.seconds || !createdAt.nanoseconds) {
             return null;
@@ -44,7 +48,7 @@ const LicitationInfoModal = ({ isOpen, type, value, onClose, onDelete, onUpdate 
                             </div>
                             <div className="form-field">
                                 <p>Nome do Solicitante:</p>
-                                <input type="text" name="Name" required defaultValue={info.Name} />
+                                <SelectClient defaultValue={info.Name} />
                             </div>
                             <div className="form-field">
                                 <p>Descrição da Solicitação:</p>
@@ -60,13 +64,18 @@ const LicitationInfoModal = ({ isOpen, type, value, onClose, onDelete, onUpdate 
 
                     {type === 'Delete' && (
                         <div className='licitContainer'>
-                            <h3>Tem certeza que deseja excluir essa licitação?</h3>
-                            <h3>{info.ListName}</h3>
-                            <div className="buttonContainer center">
-                                <button onClick={() => { deleteDocuments(id, onClose) }} className="delete">
-                                    <AiFillDelete /> Excluir
-                                </button>
-                            </div>
+                            {
+                                loading ? <Spinner /> :
+                                    <>
+                                        <h3>Tem certeza que deseja excluir essa licitação?</h3>
+                                        <h3>{info.ListName}</h3>
+                                        <div className="buttonContainer center">
+                                            <button onClick={() => { deleteDocuments(id, onClose, setLoading) }} className="delete">
+                                                <AiFillDelete /> Excluir
+                                            </button>
+                                        </div>
+                                    </>
+                            }
                         </div>
                     )}
 

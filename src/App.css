@@ -116,6 +116,16 @@ header .right button {
   border-right: 2px solid var(--mainColor);
   color: var(--textColor);
   font-size: 18px;
+  transition: ease-in-out 0.2s;
+}
+
+.sidebar.closed {
+  max-width: 55px;
+}
+
+.sidebar.closed p {
+  font-size: 5px;
+  display: none;
 }
 
 .sidebar div {
@@ -135,6 +145,20 @@ header .right button {
   color: white;
   text-decoration: none;
   flex: 1;
+}
+
+@keyframes aumentarFonte {
+  from {
+    font-size: 1px;
+  }
+
+  to {
+    font-size: 18px;
+  }
+}
+
+.sidebar .sidebarLinks p {
+  animation: aumentarFonte 0.2s linear;
 }
 
 .sidebar .sidebarLinks:hover {

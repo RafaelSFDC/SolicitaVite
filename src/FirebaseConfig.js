@@ -85,7 +85,7 @@ onSnapshot(clientsQuery, (snap) => {
 
 
 // Adding documents
-export async function addDocuments(data, setLoading, file) {
+export async function addDocuments(data, setLoading, event, file) {
   try {
     const storageReference = storageRef(storage, `files/${file.name}`);
     await uploadBytes(storageReference, file);
@@ -102,6 +102,7 @@ export async function addDocuments(data, setLoading, file) {
 
     console.log("Documento adicionado com ID:", docId, "e dados:", addedData);
     state.message = "Licitação adicionada com sucesso!"
+    event.target.reset()
   } catch (error) {
     console.error("Erro ao adicionar o documento:", error);
     throw error;
@@ -110,6 +111,8 @@ export async function addDocuments(data, setLoading, file) {
   }
 }
 
+
+// -------------- CLIENTES --------------
 export async function addClients(clientData, setLoading, event) {
   event.preventDefault();
   setLoading(true)
@@ -131,6 +134,31 @@ export async function addClients(clientData, setLoading, event) {
   } finally {
     setLoading(false);
   }
+}
+
+export async function editClient(event, id, setLoading, conclusion) {
+  event.preventDefault()
+  setLoading(true)
+  const docRef = doc(dataBase, 'Clientes', id)
+  const formData = new FormData(event.target);
+  const data = {};
+  formData.forEach((value, key) => {
+    data[key] = value;
+  });
+  updateDoc(docRef, data)
+  setLoading(false)
+  conclusion()
+  state.message = "Cliente Atualizado com sucesso!"
+}
+
+export function deleteClients(id, onClose) {
+  const docRef = doc(dataBase, 'Clientes', id)
+  deleteDoc(docRef)
+    .then(() => {
+      onClose()
+      state.message = "Cliente deletado com sucesso!"
+    })
+    .catch(err => state.message = err.message)
 }
 
 // Deleting documents
@@ -170,12 +198,20 @@ export function updateDocument(e, id, conclusion) {
 
 
 // Create a User
-export function createUserFirebase(email, password, user, setLoading) {
-  createUserWithEmailAndPassword(FIREBASE_AUTH, email, password)
+export function createUserFirebase(event, setLoading) {
+  event.preventDefault()
+  setLoading(true)
+  const formData = new FormData(event.target);
+  const data = {};
+  formData.forEach((value, key) => {
+    data[key] = value;
+  });
+  event.target.reset()
+  createUserWithEmailAndPassword(FIREBASE_AUTH, data.email, data.password)
     .then((cred) => {
       const userID = cred.user.uid
       const User = {
-        User: user,
+        userName: data.userName,
         CreatedAT: serverTimestamp()
       }
       const myDocRef = doc(userRef, userID)
@@ -213,23 +249,48 @@ export function logOut() {
     .catch((err) => console.log(err.message))
 }
 
+
+// --------------- Usuários --------------
 // Get the User
-export const getUser = (userId, email, stateFunction, setModal) => {
+export const getUser = (account, setInfo, setLoading, setModal) => {
+  const userId = account.uid
+  const userEmail = account.email
   const userName = doc(dataBase, "Usuários", userId)
   getDoc(userName)
     .then((name) => {
-      const user = name.data().User
+      const user = name.data().userName
       const data = name.data().CreatedAT
-      stateFunction({
+      setInfo({
         id: userId,
-        email: email,
+        email: userEmail,
         user: user,
         data: data
       })
+      setLoading(false)
     })
     .then(() => setModal(true))
     .catch(err => console.log(err))
 }
+
+// Update the User
+export function editUser(e, userId, setLoading, close) {
+  e.preventDefault()
+  const docRef = doc(dataBase, 'Usuários', userId)
+  const formData = new FormData(e.target);
+  const data = {};
+  formData.forEach((value, key) => {
+    data[key] = value;
+  });
+  if (data.password) {
+    ChangePassword(userId, data.password)
+  }
+  console.log(data.User)
+  updateDoc(docRef, { User: data.user })
+  close()
+  state.message = "Usuario editado com sucesso!"
+}
+
+
 
 export const GetUserOnLogin = (userId) => {
   const userName = doc(dataBase, "Usuários", userId)
@@ -241,17 +302,5 @@ export const GetUserOnLogin = (userId) => {
     .catch(err => console.log(err))
 }
 
-// Update the User
-export function updateUser(e, userId) {
-  e.preventDefault()
-  const docRef = doc(dataBase, 'Usuários', userId)
-  const form = e.target
-  const user = form[0].value
-  const password = form[1].value
-  const formContent = {
-    User: user
-  }
-  ChangePassword(userId, password)
-  updateDoc(docRef, formContent)
-  state.message = "Usuario editado com sucesso!"
-}
+
+

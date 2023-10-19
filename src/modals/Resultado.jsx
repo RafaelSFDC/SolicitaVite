@@ -23,12 +23,13 @@ const Resultado = ({ isOpen, onClose, method, type }) => {
                     top: '50%',
                     left: '50%',
                     transform: 'translate(-50%, -50%)',
-                    border: '1px solid #ccc',
+                    border: '3px solid var(--color2)', // Aqui adicionamos a borda
                     borderRadius: '5px',
                     padding: '20px',
                     boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)',
                     display: "flex",
                     justifyContent: "center",
+                    fontWeight: "bold",
                 },
             }}
         >

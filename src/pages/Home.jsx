@@ -4,6 +4,7 @@ import { FaFilePdf } from "react-icons/fa6";
 import { addDocuments } from "../FirebaseConfig";
 import determineActivePage from './../hooks/Functions';
 import SelectClient from "../components/SelectClient";
+import Spinner from "../components/Spinner";
 
 const Home = () => {
     const [loading, setLoading] = useState(false)
@@ -38,7 +39,7 @@ const Home = () => {
             Date: formData.get("Date"),
         };
 
-        addDocuments(data, setLoading, file);
+        addDocuments(data, setLoading, event, file);
     };
 
 
@@ -104,9 +105,11 @@ const Home = () => {
                                 </label>
                             </div>
                         </div>
-                        {loading ? <button style={{ background: "transparent", border: "none" }}>
-                            <ColorRing colors={['#FFCC00', '#FFCC00', '#FFCC00', '#FFCC00', '#FFCC00']} />
-                        </button> : <button className="send-button" type="submit">Solicitar</button>}
+                        {loading ?
+                            <button style={{ background: "transparent", border: "none" }}>
+                                <Spinner />
+                            </button>
+                            : <button className="send-button" type="submit">Solicitar</button>}
                     </form>
                 </div>
             </div>

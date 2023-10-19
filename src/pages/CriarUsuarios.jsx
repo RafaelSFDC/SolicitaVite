@@ -11,12 +11,7 @@ const CriarUsuarios = () => {
     const [password, setPassword] = useState("")
 
     const create = (e) => {
-        e.preventDefault()
-        setLoading(true)
-        createUserFirebase(email, password, user, setLoading)
-        setEmail("")
-        setUser("")
-        setPassword("")
+        createUserFirebase(e, setLoading)
     }
 
     useEffect(() => {
@@ -31,15 +26,15 @@ const CriarUsuarios = () => {
                     <form onSubmit={create} className="formContainer">
                         <div className="form-field">
                             <p>Email</p>
-                            <input type="email" id="email" value={email} onChange={e => setEmail(e.target.value)} required />
+                            <input type="email" name="email" required />
                         </div>
                         <div className="form-field">
                             <p>Nome do Usuário</p>
-                            <input type="text" id="user" value={user} onChange={e => setUser(e.target.value)} required />
+                            <input name="userName" required />
                         </div>
                         <div className="form-field">
                             <p>Senha</p>
-                            <input type="password" id="password" value={password} onChange={e => setPassword(e.target.value)} required />
+                            <input name="password" required />
                         </div>
 
                         {loading ? <button style={{ background: "transparent", border: "none" }}>

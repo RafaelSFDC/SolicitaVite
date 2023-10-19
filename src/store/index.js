@@ -16,7 +16,7 @@ const state = proxy({
     modalDelete: false,
     modalResult: false,
     Clients: [],
-    message: "isso"
+    message: ""
 });
 
 export default state;

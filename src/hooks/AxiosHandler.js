@@ -1,4 +1,5 @@
 import axios from "axios";
+import state from "../store";
 const url = "https://solicitaserv.onrender.com/"
 
 export const ChangePassword = async (user, password) => {
@@ -16,10 +17,13 @@ export const ChangePassword = async (user, password) => {
     console.log("Axios user: ", user)
 };
 
-export const DeleteTheUser = async (userId) => {
+export const DeleteTheUser = async (userId, modalToggle, setReload) => {
     try {
         const response = await axios.delete(`${url}deletar-usuario/${userId}`);
         console.log('Usuário deletado com sucesso:', response.data);
+        modalToggle()
+        setReload(true)
+        state.message = "Usuário deletado com sucesso!"
     } catch (error) {
         console.error('Erro ao deletar usuário:', error);
     }
@@ -30,7 +34,6 @@ export const GetTheUsers = async (setUsers, setLoading) => {
     axios.get(`${url}list-users`)
         .then(response => {
             setUsers(response.data); // Atualiza o estado com os usuários recebidos
-            console.log("Atualizou")
         })
         .then(() => setLoading(false), console.log("axios finished"))
         .catch(error => console.error('Erro ao obter lista de usuários:', error));

@@ -13,37 +13,37 @@ const Sidebar = () => {
             <div>
                 <Link to="/" className={state.activePage === "/" ? "sidebarLinks active" : "sidebarLinks"}>
                     <PiListChecksBold />
-                    Licitações Disponiveis
+                    <p>Licitações Disponiveis</p>
                 </Link>
             </div>
             <div>
                 <Link to="/create" className={state.activePage === "/create" ? "sidebarLinks active" : "sidebarLinks"}>
                     <PiListPlusBold />
-                    Criar Licitação
+                    <p>Criar Licitação</p>
                 </Link>
             </div>
             <div>
                 <Link to="/users" className={state.activePage === "/users" ? "sidebarLinks active" : "sidebarLinks"}>
                     <PiUsersBold />
-                    Usuários
+                    <p>Usuários</p>
                 </Link>
             </div>
             <div>
                 <Link to="/createUsers" className={state.activePage === "/createUsers" ? "sidebarLinks active" : "sidebarLinks"}>
                     <PiUserCirclePlusBold />
-                    Adicionar Usuários
+                    <p>Adicionar Usuários</p>
                 </Link>
             </div>
             <div>
                 <Link to="/clients" className={state.activePage === "/clients" ? "sidebarLinks active" : "sidebarLinks"}>
                     <BsFileEarmarkPersonFill />
-                    Clientes
+                    <p>Clientes</p>
                 </Link>
             </div>
             <div>
                 <Link to="/addClients" className={state.activePage === "/addClients" ? "sidebarLinks active" : "sidebarLinks"}>
                     <BsPersonCheckFill />
-                    Adicionar Clientes
+                    <p>Adicionar Clientes</p>
                 </Link>
             </div>
         </div>
