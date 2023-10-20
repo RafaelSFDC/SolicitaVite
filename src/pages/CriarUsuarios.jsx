@@ -33,6 +33,15 @@ const CriarUsuarios = () => {
                             <input name="userName" required />
                         </div>
                         <div className="form-field">
+                            <p>Tipo de Usuário</p>
+                            <select name="permission" defaultValue={""} required>
+                                <option value="" disabled>Selecione o nivel de Permissão</option>
+                                <option value="User">Usuario</option>
+                                <option value="Editor">Editor</option>
+                                <option value="Admin">Admin</option>
+                            </select>
+                        </div>
+                        <div className="form-field">
                             <p>Senha</p>
                             <input name="password" required />
                         </div>

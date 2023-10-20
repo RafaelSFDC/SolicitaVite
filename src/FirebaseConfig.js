@@ -4,7 +4,7 @@ import { getFirestore, collection, getDocs, onSnapshot, addDoc, deleteDoc, doc, 
 import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "firebase/storage";
 
 import { getMessaging, getToken, } from "firebase/messaging"
-import { createUserWithEmailAndPassword, getAuth, signOut, signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
+import { createUserWithEmailAndPassword, getAuth, signOut, signInWithEmailAndPassword, onAuthStateChanged, updateProfile } from "firebase/auth";
 import state from './store/index';
 import { ChangePassword } from "./hooks/AxiosHandler";
 // TODO: Add SDKs for Firebase products that you want to use
@@ -224,35 +224,47 @@ export function updateDocument(e, id, conclusion) {
 
 // Create a User
 export function createUserFirebase(event, setLoading) {
-  event.preventDefault()
-  setLoading(true)
+  event.preventDefault();
+  setLoading(true);
   const formData = new FormData(event.target);
   const data = {};
   formData.forEach((value, key) => {
     data[key] = value;
   });
-  event.target.reset()
-  createUserWithEmailAndPassword(FIREBASE_AUTH, data.email, data.password)
-    .then((cred) => {
-      const userID = cred.user.uid
-      const User = {
-        userName: data.userName,
-        CreatedAT: serverTimestamp()
-      }
-      const myDocRef = doc(userRef, userID)
+  event.target.reset();
 
-      setDoc(myDocRef, User)
+  const auth = getAuth();
+
+  createUserWithEmailAndPassword(auth, data.email, data.password)
+    .then((cred) => {
+      const userID = cred.user.uid;
+      const userDisplayName = data.userName; // Define o displayName a partir dos dados do formulário
+
+      // Configura o displayName do usuário
+      updateProfile(cred.user, { displayName: userDisplayName })
         .then(() => {
-          setLoading(false)
-          state.message = "Usuario criado com sucesso!"
+          const userDocRef = doc(userRef, userID);
+          const userObject = {
+            permission: data.permission,
+            CreatedAT: serverTimestamp(),
+          };
+
+          setDoc(userDocRef, userObject)
+            .then(() => {
+              setLoading(false);
+              state.message = "Usuário criado com sucesso!";
+            })
+            .catch((error) => {
+              console.error('Erro ao adicionar o documento:', error);
+            });
         })
         .catch((error) => {
-          console.error('Erro ao adicionar o documento:', error);
-        })
+          console.error('Erro ao atualizar o displayName:', error);
+        });
     })
     .catch((err) => {
-      console.log(err.message)
-    })
+      console.log(err.message);
+    });
 }
 
 // Login
@@ -261,6 +273,7 @@ export function LogUser(email, password, setLoading) {
     signInWithEmailAndPassword(FIREBASE_AUTH, email, password)
       .then((cred) => {
         resolve(cred); // Resolva a promessa com o valor de cred
+        GetUserOnLogin(cred)
       })
       .catch((err) => {
         console.log(err.message);
@@ -270,12 +283,16 @@ export function LogUser(email, password, setLoading) {
 }
 
 // Logout
-export function logOut() {
+export function logOut(navigate) {
   signOut(FIREBASE_AUTH)
     .then(() => {
-
+      // Logout bem-sucedido
+      console.log("Usuário deslogado com sucesso.");
     })
-    .catch((err) => console.log(err.message))
+    .catch((err) => {
+      // Erro durante o logout
+      console.error("Erro durante o logout: ", err.message);
+    });
 }
 
 
@@ -326,7 +343,7 @@ export const GetUserOnLogin = (userId) => {
   getDoc(userName)
     .then((name) => {
       const user = name.data().User
-      state.user = user
+      state.user = userName
     })
     .catch(err => console.log(err))
 }

@@ -47,11 +47,12 @@ const Usuarios = () => {
                         /> : <ul className="listContainer">
                             {console.log("usuarios: ", users)}
                             {users.map((user, index) => {
+                                console.log(user)
                                 const id = user.uid
                                 const email = user.email
                                 return (
                                     <li key={id}>
-                                        <p>{email}</p>
+                                        <p>{user.displayName}</p>
                                         <div className="buttonContainer">
                                             <button className="edit" onClick={() => { modalToggle(index); setType("Edit") }} >
                                                 <AiFillEdit /> <p>Editar</p>

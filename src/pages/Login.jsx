@@ -9,7 +9,6 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import logo from "../assets/images/LOGO SEM FUNDO.1.png"
 
 const Login = () => {
-    const { auth, setAuth } = useContext(AuthContext)
     const navigate = useNavigate()
     const location = useLocation()
     const from = location.state?.from?.pathname || "/";
@@ -24,10 +23,8 @@ const Login = () => {
         e.preventDefault();
         try {
             const result = await LogUser(email, password);
-            const token = result.user.accessToken
             state.logged = true
             navigate("/")
-            console.log(auth)
         } catch (error) {
             console.error(error);
         }

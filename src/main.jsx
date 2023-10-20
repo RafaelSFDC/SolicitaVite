@@ -15,6 +15,7 @@ import Login from './pages/Login.jsx';
 import { AuthProvider } from "./auth/AuthContext.jsx"
 import Usuarios from './pages/Usuarios';
 import RequireAuth from './auth/RequireAuth.jsx';
+import IsAuth from './auth/IsAuth.jsx';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
@@ -22,8 +23,9 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     <BrowserRouter>
       <AuthProvider>
         <Routes>
-          <Route path="/login" element={<Login />} />
-
+          <Route element={<IsAuth />}>
+            <Route path="/login" element={<Login />} />
+          </Route>
 
           <Route element={<RequireAuth />}>
             <Route path="/" element={<App />}>

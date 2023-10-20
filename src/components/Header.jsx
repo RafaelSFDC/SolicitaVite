@@ -2,10 +2,13 @@ import React from "react";
 import { PiStackBold, PiListBold } from "react-icons/pi";
 import { useSnapshot } from "valtio";
 import state from "../store";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { logOut } from "../FirebaseConfig";
 
 const Header = () => {
+    const navigate = useNavigate()
     useSnapshot(state)
+    const user = JSON.parse(JSON.stringify(state.user))
     const sidebarToggle = () => {
         const sidebar = document.querySelector(".sidebar");
         sidebar.classList.toggle("closed");
@@ -17,8 +20,8 @@ const Header = () => {
             Painel Solicita
         </div>
         <div className="right">
-            {/* {state.user ? state.user : "Usuário Solicita"} */}
-            <Link to="/login">
+            {user.displayName ? user.displayName : "Usuário Solicita"}
+            <Link to="/login" onClick={() => logOut()}>
                 Logout
             </Link>
         </div>

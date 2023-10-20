@@ -6,7 +6,7 @@ import { useEffect } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { FIREBASE_AUTH } from "../FirebaseConfig";
 
-const RequireAuth = () => {
+const IsAuth = () => {
     const auth = FIREBASE_AUTH; // Use a instância FIREBASE_AUTH
     useSnapshot(state);
     const { location } = useLocation();
@@ -18,6 +18,7 @@ const RequireAuth = () => {
             if (user) {
                 state.user = user;
                 state.logged = true
+                console.log("usuario: ", user)
             } else {
                 state.user = null;
                 state.logged = false
@@ -25,13 +26,15 @@ const RequireAuth = () => {
         });
 
         return () => {
+
             unsubscribe(); // Certifique-se de cancelar a inscrição ao desmontar o componente
         }
-    }, [state.logged]);
+    }, []);
 
     return (
-        state.logged ? <Outlet /> : <Navigate to="/login" state={{ from: location }} replace />
+        state.logged ? <Navigate to="/" state={{ from: location }} replace /> : <Outlet />
     )
 }
 
-export default RequireAuth;
+export default IsAuth;
+
