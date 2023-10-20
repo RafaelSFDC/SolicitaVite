@@ -29,6 +29,18 @@ export const DeleteTheUser = async (userId, modalToggle, setReload) => {
     }
 };
 
+export const UpdateUserDisplayName = async (userId, novoDisplayName, setLoading) => {
+    try {
+        await axios.put(`${url}editar-usuario/${userId}`, {
+            novoDisplayName: novoDisplayName,
+        });
+        state.message = 'Usuário atualizado com sucesso!'
+        setLoading(true)
+    } catch (error) {
+        state.message = "Erro ao editar o usuário"
+    }
+};
+
 export const GetTheUsers = async (setUsers, setLoading) => {
     setLoading(true)
     axios.get(`${url}list-users`)

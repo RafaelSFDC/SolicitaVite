@@ -6,7 +6,7 @@ import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "fire
 import { getMessaging, getToken, } from "firebase/messaging"
 import { createUserWithEmailAndPassword, getAuth, signOut, signInWithEmailAndPassword, onAuthStateChanged, updateProfile } from "firebase/auth";
 import state from './store/index';
-import { ChangePassword } from "./hooks/AxiosHandler";
+import { ChangePassword, UpdateUserDisplayName } from "./hooks/AxiosHandler";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -304,12 +304,12 @@ export const getUser = (account, setInfo, setLoading, setModal) => {
   const userName = doc(dataBase, "Usuários", userId)
   getDoc(userName)
     .then((name) => {
-      const user = name.data().userName
+      const permission = name.data().permission
       const data = name.data().CreatedAT
       setInfo({
         id: userId,
         email: userEmail,
-        user: user,
+        permission: permission,
         data: data
       })
       setLoading(false)
@@ -328,12 +328,11 @@ export function editUser(e, userId, setLoading, close) {
     data[key] = value;
   });
   if (data.password) {
-    ChangePassword(userId, data.password)
+    ChangePassword(userId, data.password,)
   }
-  console.log(data.User)
-  updateDoc(docRef, { User: data.user })
+  UpdateUserDisplayName(userId, data.user, setLoading)
+  updateDoc(docRef, { permission: data.permission })
   close()
-  state.message = "Usuario editado com sucesso!"
 }
 
 

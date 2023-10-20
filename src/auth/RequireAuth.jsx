@@ -18,6 +18,7 @@ const RequireAuth = () => {
             if (user) {
                 state.user = user;
                 state.logged = true
+                console.log("usuario: ", user)
             } else {
                 state.user = null;
                 state.logged = false

@@ -12,11 +12,13 @@ const Usuarios = () => {
     const [loading, setLoading] = useState(false);
     const [modal, setModal] = useState(false);
     const [info, setInfo] = useState("");
+    const [userInfo, setUserInfo] = useState("");
     const [type, setType] = useState("");
 
     const modalToggle = (index) => {
         if (index != null) {
             getUser(users[index], setInfo, setLoading, setModal)
+            setUserInfo(users[index])
         }
         else {
             setModal(!modal)
@@ -31,7 +33,7 @@ const Usuarios = () => {
     }, [reload]);
     return (
         <div className="container">
-            <UsuariosModal isOpen={modal} onClose={() => modalToggle()} value={info} type={type} setReload={setReload} />
+            <UsuariosModal isOpen={modal} onClose={() => modalToggle()} userInfo={userInfo} value={info} type={type} setReload={setReload} />
             <div className="containerContent">
                 <div className="contentHeader">Usuários</div>
                 <div className="contentBody">
@@ -52,7 +54,7 @@ const Usuarios = () => {
                                 const email = user.email
                                 return (
                                     <li key={id}>
-                                        <p>{user.displayName}</p>
+                                        <p> Nome do Usuário: {user.displayName}</p>
                                         <div className="buttonContainer">
                                             <button className="edit" onClick={() => { modalToggle(index); setType("Edit") }} >
                                                 <AiFillEdit /> <p>Editar</p>

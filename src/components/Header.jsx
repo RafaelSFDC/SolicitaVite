@@ -20,7 +20,7 @@ const Header = () => {
             Painel Solicita
         </div>
         <div className="right">
-            {user.displayName ? user.displayName : "Usuário Solicita"}
+            {user.displayName ? user.displayName : "Solicita Admin"}
             <Link to="/login" onClick={() => logOut()}>
                 Logout
             </Link>

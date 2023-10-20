@@ -6,7 +6,7 @@ import { deleteClients, editUser } from '../FirebaseConfig';
 import Spinner from '../components/Spinner';
 import { DeleteTheUser } from "../hooks/AxiosHandler";
 
-const UsuariosModal = ({ isOpen, type, value, onClose, setReload }) => {
+const UsuariosModal = ({ isOpen, type, value, onClose, setReload, userInfo }) => {
     const [loading, setLoading] = useState(false);
     if (!value) {
         return null; // Retorna null se value não existir
@@ -22,18 +22,29 @@ const UsuariosModal = ({ isOpen, type, value, onClose, setReload }) => {
         return date.toLocaleString(); // Você pode ajustar o formato conforme necessário
     }
     const data = value
+    const user = userInfo
+    console.log("A data: ", data)
     return (
         value ? (
             <Modal overlayClassName="modalOverlay" className="modal" isOpen={isOpen} onRequestClose={onClose} contentLabel="Modal">
                 <div className="modal-item">
                     <AiFillCloseSquare className="button-icon" onClick={onClose} />
-                    <h2>{type === 'Edit' ? 'Editar Cliente' : type === 'Delete' ? 'Deletar Cliente' : 'Informações do Cliente'}</h2>
+                    <h2>{type === 'Edit' ? 'Editar Usuário' : type === 'Delete' ? 'Deletar Usuário' : 'Informações do Usuário'}</h2>
 
                     {type === 'Edit' && (
-                        <form onSubmit={(event) => editUser(event, data.id, setLoading, onClose)} className="formContainer licitContainer">
+                        <form onSubmit={(event) => editUser(event, data.id, setReload, onClose)} className="formContainer licitContainer">
                             <div className="form-field">
                                 <p>Nome de Usuario:</p>
-                                <textarea rows={1} type="text" name='user' required defaultValue={data.user} />
+                                <textarea rows={1} type="text" name='user' required defaultValue={user.displayName} />
+                            </div>
+                            <div className="form-field">
+                                <p>Tipo de Usuário</p>
+                                <select name="permission" defaultValue={data.permission ? data.permission : ""} required>
+                                    <option value="" disabled>Selecione o nivel de Permissão</option>
+                                    <option value="Usuario">Usuario</option>
+                                    <option value="Editor">Editor</option>
+                                    <option value="Admin">Admin</option>
+                                </select>
                             </div>
                             <div className="form-field">
                                 <p>Senha:</p>
@@ -59,7 +70,11 @@ const UsuariosModal = ({ isOpen, type, value, onClose, setReload }) => {
                         <div className="licitContainer">
                             <div>
                                 <span>Usuário: </span>
-                                <p>{data.user}</p>
+                                <p>{user.displayName}</p>
+                            </div>
+                            <div>
+                                <span>Nivel de Permissão: </span>
+                                <p>{data.permission}</p>
                             </div>
                             <div>
                                 <span>Data de criação: </span>
@@ -67,7 +82,7 @@ const UsuariosModal = ({ isOpen, type, value, onClose, setReload }) => {
                             </div>
                             <div>
                                 <span>Email: </span>
-                                <p>{data.email}</p>
+                                <p>{user.email}</p>
                             </div>
                         </div>
                     )}
