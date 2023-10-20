@@ -214,7 +214,13 @@ header .right a {
   height: auto;
   border-radius: 0 0 2px 2px;
   padding-top: 24px;
-  padding-bottom: 24px
+  padding-bottom: 24px;
+}
+
+.contentBody.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 

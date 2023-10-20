@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { AiFillDelete, AiFillInfoCircle, AiFillEdit, } from "react-icons/ai";
 import { getUser } from "../FirebaseConfig";
-import { ColorRing } from 'react-loader-spinner'
 import { GetTheUsers } from "../hooks/AxiosHandler";
 import determineActivePage from "../hooks/Functions";
 import UsuariosModal from './../modals/UsuariosModal';
+import Spinner from "../components/Spinner";
 
 const Usuarios = () => {
     const [users, setUsers] = useState([]);
@@ -36,17 +36,9 @@ const Usuarios = () => {
             <UsuariosModal isOpen={modal} onClose={() => modalToggle()} userInfo={userInfo} value={info} type={type} setReload={setReload} />
             <div className="containerContent">
                 <div className="contentHeader">Usuários</div>
-                <div className="contentBody">
+                <div className={loading ? "loading contentBody" : "contentBody"}>
                     <div className="listContainer">
-                        {loading ? <ColorRing
-                            visible={true}
-                            height="120"
-                            width="120"
-                            ariaLabel="blocks-loading"
-                            wrapperStyle={{}}
-                            wrapperClass="blocks-wrapper"
-                            colors={['#e15b64', '#f47e60', '#f8b26a', '#abbd81', '#849b87']}
-                        /> : <ul className="listContainer">
+                        {loading ? <Spinner /> : <ul className="listContainer">
                             {console.log("usuarios: ", users)}
                             {users.map((user, index) => {
                                 console.log(user)
