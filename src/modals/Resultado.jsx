@@ -9,7 +9,18 @@ const Resultado = ({ isOpen, onClose, method, type }) => {
         modal = true
     }
     const closeResult = () => {
-        state.message = ""
+        // Selecionar os elementos com as classes modal e modalOverlay
+        const modalElements = document.querySelectorAll('.ReactModal__Overlay, .ReactModal__Content');
+
+        // Adicionar a classe 'closed' aos elementos
+        modalElements.forEach((element) => {
+            element.classList.add('closed');
+        });
+
+        // Esperar 0.3 segundos e, em seguida, remover o state.message
+        setTimeout(() => {
+            state.message = "";
+        }, 300); // 300 milissegundos = 0.3 segundos
     }
     return (
         <Modal

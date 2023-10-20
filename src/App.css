@@ -447,6 +447,36 @@ h2 {
 
 
 /* MODAIS */
+.ReactModal__Content {
+  animation: baseModalSlideDown 0.3s ease-in-out forwards;
+}
+
+.ReactModal__Content.closed {
+  animation: baseModalSlideUp 0.3s ease-in-out forwards;
+}
+
+@keyframes baseModalSlideDown {
+  from {
+    transform: translate(-50%, -100%)
+  }
+
+  to {
+    transform: translate(-50%, -50%)
+  }
+}
+
+@keyframes baseModalSlideUp {
+  from {
+    transform: translate(-50%, -50%)
+  }
+
+  to {
+    transform: translate(-50%, -100%)
+  }
+}
+
+
+
 .modalOverlay {
   position: fixed;
   top: 0;
@@ -458,6 +488,16 @@ h2 {
   display: flex;
   justify-content: center;
   align-items: center;
+  animation: modalOverlayOpen 0.3s ease-in-out forwards;
+}
+
+.ReactModal__Overlay {
+  animation: modalOverlayOpen 0.3s ease-in-out forwards;
+}
+
+.modalOverlay.closed,
+.ReactModal__Overlay.closed {
+  animation: modalOverlayClosed 0.3s ease-in-out forwards;
 }
 
 .modal {
@@ -468,6 +508,53 @@ h2 {
   outline: none;
   width: 100%;
   max-width: 1150px;
+  transition: bottom 0.4s ease-in-out;
+  animation: modalSlideUp 3s ease-in-out forwards;
+  transform: translateY(100%);
+  animation: modalSlideDown 0.3s ease-in-out forwards;
+  /* Comece oculto acima da tela */
+}
+
+
+
+@keyframes modalSlideDown {
+  from {
+    transform: translateY(-100%)
+  }
+
+  to {
+    transform: translate(0)
+  }
+}
+
+@keyframes modalSlideUp {
+  from {
+    transform: translateY(0)
+  }
+
+  to {
+    transform: translateY(-100%)
+  }
+}
+
+@keyframes modalOverlayOpen {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes modalOverlayClosed {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
 }
 
 .modal h2 {
