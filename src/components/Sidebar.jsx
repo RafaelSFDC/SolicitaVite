@@ -11,7 +11,7 @@ const Sidebar = () => {
     return (
         <div className={"sidebar"}>
             <div>
-                <Link to="/" className={state.activePage === "/" ? "sidebarLinks active" : "sidebarLinks"}>
+                <Link to="/aveliable" className={state.activePage === "/aveliable" ? "sidebarLinks active" : "sidebarLinks"}>
                     <PiListChecksBold />
                     <p>Licitações Disponiveis</p>
                 </Link>

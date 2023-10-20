@@ -55,8 +55,12 @@ const LicitationInfoModal = ({ isOpen, type, value, onClose, }) => {
                                 <textarea rows={1} name="Desc" type="text" required defaultValue={info.Desc} />
                             </div>
                             <div className="form-field">
+                                <p>Observações:</p>
+                                <textarea rows={1} name="observ" type="text" required defaultValue={info.observ} />
+                            </div>
+                            <div className="form-field">
                                 <p>Data de entrega:</p>
-                                <input type="date" name="Date" id="" required defaultValue={info.Date} />
+                                <input className='date' type="date" name="Date" id="" required defaultValue={info.Date} />
                             </div>
                             <button className="send-button" type="submit">Atualizar</button>
                         </form>

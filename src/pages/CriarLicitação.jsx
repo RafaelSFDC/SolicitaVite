@@ -2,11 +2,11 @@ import React, { useEffect, useState } from "react";
 import { ColorRing } from 'react-loader-spinner'
 import { FaFilePdf } from "react-icons/fa6";
 import { addDocuments } from "../FirebaseConfig";
-import determineActivePage from './../hooks/Functions';
+import determineActivePage from '../hooks/Functions';
 import SelectClient from "../components/SelectClient";
 import Spinner from "../components/Spinner";
 
-const Home = () => {
+const CriarLicitação = () => {
     const [loading, setLoading] = useState(false)
     const [edital, setEdital] = useState('Nenhum arquivo selecionado');
     useEffect(() => {
@@ -117,4 +117,4 @@ const Home = () => {
     )
 };
 
-export default Home;
+export default CriarLicitação;

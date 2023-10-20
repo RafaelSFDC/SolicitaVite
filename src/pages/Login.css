@@ -1,0 +1,144 @@
+:root {
+    --width: 70%;
+    /* --mainColor: #50C7D7; */
+    --backgroundColor: #7491A9;
+    --secondaryColor: #00A1AB;
+    --radius: 24px;
+}
+
+html {
+    margin: 0;
+    padding: 0;
+}
+
+h1,
+h3,
+p {
+    margin: 0;
+    padding: 0;
+}
+
+.page {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    font-weight: 400;
+}
+
+.loginContainer h3 {
+    font-weight: 400;
+    font-size: 50px;
+    border-bottom: 4px solid var(--mainColor);
+    width: var(--width);
+}
+
+.loginContainer {
+    width: 100%;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--mainColor);
+    color: white;
+    display: flex;
+}
+
+.loginContainer>* {
+    flex: 1;
+    width: 50%;
+    height: 100%;
+}
+
+.login-form {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: var(--radius);
+    width: 50%;
+    height: 100%;
+    justify-content: space-evenly;
+    text-align: center;
+    background-color: var(--backGround);
+}
+
+.login-form p,
+.login-form span,
+.login-form input,
+.login-form button {
+    font-size: 24px;
+}
+
+
+.input-field {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    width: var(--width);
+}
+
+.input-field input {
+    border: none;
+    border-radius: 2px;
+    padding: 5px;
+    padding-left: 10px;
+    font-size: 24px;
+    outline: none;
+    border-left: 5px solid var(--mainColor);
+    /* Adicione uma borda externa para destacar a borda interna */
+}
+
+.info-field {
+    display: flex;
+    font-size: 12px;
+    width: var(--width);
+    justify-content: space-between;
+}
+
+.login-form button {
+    border: none;
+    background-color: var(--mainColor);
+    border-radius: 3px;
+    width: 50%;
+    height: 7%;
+    color: white;
+    cursor: pointer;
+}
+
+.logo {
+    max-width: 100%;
+    /* Define a largura máxima da imagem como 100% do elemento pai */
+    /* height: auto; */
+    /* Mantém a proporção original da imagem */
+    background-color: var(--color2);
+}
+
+.fix {
+    font-size: 12px;
+}
+
+span.fix {
+    color: var(--mainColor);
+    cursor: pointer;
+}
+
+@media screen and (max-width: 768px) {
+    .logo {
+        display: none;
+    }
+
+    .login-form {
+        width: 100%;
+        border-radius: var(--radius);
+    }
+
+    .info-field {
+        flex-direction: column;
+    }
+
+    .info-field div {
+        justify-content: center;
+    }
+
+}

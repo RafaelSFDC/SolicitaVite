@@ -95,7 +95,7 @@ header .right {
   height: 100%;
 }
 
-header .right button {
+header .right a {
   background-color: var(--mainColor);
   border: none;
   outline: none;
@@ -106,6 +106,10 @@ header .right button {
   color: white;
   font-weight: 500;
   font-size: 14px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
 }
 
 

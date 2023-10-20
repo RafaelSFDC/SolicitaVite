@@ -111,6 +111,31 @@ export async function addDocuments(data, setLoading, event, file) {
   }
 }
 
+export async function editDocuments(data, setLoading, event, file) {
+  try {
+    const storageReference = storageRef(storage, `files/${file.name}`);
+    await uploadBytes(storageReference, file);
+    const downloadURL = await getDownloadURL(storageReference);
+
+    const newData = { ...data, Edital: downloadURL, CreatedAT: serverTimestamp() };
+    const docRef = await addDoc(collRef, newData);
+
+    // Obtenha o ID do documento recém-adicionado
+    const docId = docRef.id;
+
+    // Obtenha os dados do documento recém-adicionado
+    const addedData = await getDoc(docRef).then((doc) => doc.data());
+
+    console.log("Documento adicionado com ID:", docId, "e dados:", addedData);
+    state.message = "Licitação adicionada com sucesso!"
+    event.target.reset()
+  } catch (error) {
+    console.error("Erro ao adicionar o documento:", error);
+    throw error;
+  } finally {
+    setLoading(false);
+  }
+}
 
 // -------------- CLIENTES --------------
 export async function addClients(clientData, setLoading, event) {
@@ -232,12 +257,16 @@ export function createUserFirebase(event, setLoading) {
 
 // Login
 export function LogUser(email, password, setLoading) {
-  signInWithEmailAndPassword(FIREBASE_AUTH, email, password)
-    .then((cred) => {
-      GetUserOnLogin(cred.user.uid)
-    })
-    .catch((err) => console.log(err.message))
-    .finally(() => { state.logged = true; setLoading(false) })
+  return new Promise((resolve, reject) => {
+    signInWithEmailAndPassword(FIREBASE_AUTH, email, password)
+      .then((cred) => {
+        resolve(cred); // Resolva a promessa com o valor de cred
+      })
+      .catch((err) => {
+        console.log(err.message);
+        reject(err); // Rejeite a promessa com o erro
+      })
+  });
 }
 
 // Logout

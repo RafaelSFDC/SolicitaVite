@@ -6,7 +6,7 @@ import { GetTheUsers } from "../hooks/AxiosHandler";
 import determineActivePage from "../hooks/Functions";
 import UsuariosModal from './../modals/UsuariosModal';
 
-const Users = () => {
+const Usuarios = () => {
     const [users, setUsers] = useState([]);
     const [reload, setReload] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -76,4 +76,4 @@ const Users = () => {
     )
 };
 
-export default Users;
+export default Usuarios;
