@@ -1,6 +1,8 @@
 import axios from "axios";
 import state from "../store";
+import moment from "moment";
 const url = "https://solicitaserv.onrender.com/"
+const notifyUrl = 'https://app.nativenotify.com/api/notification'
 
 export const ChangePassword = async (user, password) => {
     const userId = user; // Substitua pelo UID real do usuário
@@ -49,4 +51,31 @@ export const GetTheUsers = async (setUsers, setLoading) => {
         })
         .then(() => setLoading(false), console.log("axios finished"))
         .catch(error => console.error('Erro ao obter lista de usuários:', error));
+}
+
+
+// NOTIFICAÇÃO
+export const Notify = (title) => {
+    // Gerar a data atual no formato desejado
+    const dateSent = moment().format('MM-DD-YYYY h:mmA');
+
+    const data = {
+        "appId": 14884,
+        "appToken": "8eIowtFYCkhSh8eaXJDsqv",
+        "title": "Nova Licitação Adicionada!",
+        "body": title,
+        "dateSent": dateSent
+    };
+
+    axios.post(notifyUrl, data, {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+        .then(response => {
+            console.log('Resposta:', response.data);
+        })
+        .catch(error => {
+            console.error('Erro ao enviar a solicitação:', error);
+        });
 }

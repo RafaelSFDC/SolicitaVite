@@ -2,11 +2,9 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore, collection, getDocs, onSnapshot, addDoc, deleteDoc, doc, setDoc, query, where, orderBy, serverTimestamp, updateDoc, getDoc } from "firebase/firestore"
 import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "firebase/storage";
-
-import { getMessaging, getToken, } from "firebase/messaging"
 import { createUserWithEmailAndPassword, getAuth, signOut, signInWithEmailAndPassword, onAuthStateChanged, updateProfile } from "firebase/auth";
 import state from './store/index';
-import { ChangePassword, UpdateUserDisplayName } from "./hooks/AxiosHandler";
+import { ChangePassword, Notify, UpdateUserDisplayName } from "./hooks/AxiosHandler";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -83,26 +81,29 @@ onSnapshot(clientsQuery, (snap) => {
   console.log("Clientes:", state.Clients);
 });
 
-
-// Adding documents
 export async function addDocuments(data, setLoading, event, file) {
   try {
-    const storageReference = storageRef(storage, `files/${file.name}`);
-    await uploadBytes(storageReference, file);
-    const downloadURL = await getDownloadURL(storageReference);
+    const auth = getAuth();
+    const user = auth.currentUser;
 
-    const newData = { ...data, Edital: downloadURL, CreatedAT: serverTimestamp() };
-    const docRef = await addDoc(collRef, newData);
+    if (user) {
+      // Referência para o armazenamento
+      const storage = getStorage();
+      const storageReference = storageRef(storage, `files/${file.name}`);
 
-    // Obtenha o ID do documento recém-adicionado
-    const docId = docRef.id;
+      // Upload do arquivo para o armazenamento
+      await uploadBytes(storageReference, file);
+      const downloadURL = await getDownloadURL(storageReference);
 
-    // Obtenha os dados do documento recém-adicionado
-    const addedData = await getDoc(docRef).then((doc) => doc.data());
+      // Adicionar dados ao Firestore
+      const newData = { ...data, Edital: downloadURL, CreatedAT: serverTimestamp() };
+      const docRef = await addDoc(collection(getFirestore(), 'Solicitações'), newData);
 
-    console.log("Documento adicionado com ID:", docId, "e dados:", addedData);
-    state.message = "Licitação adicionada com sucesso!"
-    event.target.reset()
+      console.log("Documento adicionado com ID:", docRef.id, "e dados:", newData);
+      state.message = "Licitação adicionada com sucesso!";
+      event.target.reset();
+      Notify(data.Title)
+    }
   } catch (error) {
     console.error("Erro ao adicionar o documento:", error);
     throw error;
@@ -110,6 +111,7 @@ export async function addDocuments(data, setLoading, event, file) {
     setLoading(false);
   }
 }
+
 
 export async function editDocuments(data, setLoading, event, file) {
   try {
