@@ -52,7 +52,7 @@ const Clientes = () => {
                 onClose={modalToggle}
             />
             <div className="containerContent">
-                <h1 className="contentHeader">Lista de Clientes</h1>
+                <h1 className="contentHeader">Lista de Empresas</h1>
                 <div className="contentBody">
                     {<ul className="listContainer">
                         {clients.map((item, index) => {

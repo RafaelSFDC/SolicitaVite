@@ -19,7 +19,7 @@ const CriarClientes = () => {
     return (
         <div className="container">
             <div className="containerContent">
-                <h1 className="contentHeader">Criar Cliente</h1>
+                <h1 className="contentHeader">Adicionar Empresa</h1>
                 <div className="contentBody">
                     <form onSubmit={formHandler} className="formContainer">
                         <div className="form-field">

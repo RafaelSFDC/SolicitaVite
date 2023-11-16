@@ -37,13 +37,13 @@ const Sidebar = () => {
             <div>
                 <Link to="/clients" className={state.activePage === "/clients" ? "sidebarLinks active" : "sidebarLinks"}>
                     <BsFileEarmarkPersonFill />
-                    <p>Clientes</p>
+                    <p>Empresas</p>
                 </Link>
             </div>
             <div>
                 <Link to="/addClients" className={state.activePage === "/addClients" ? "sidebarLinks active" : "sidebarLinks"}>
                     <BsPersonCheckFill />
-                    <p>Adicionar Clientes</p>
+                    <p>Adicionar Impresas</p>
                 </Link>
             </div>
         </div>
