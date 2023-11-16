@@ -41,7 +41,6 @@ const Usuarios = () => {
                         {loading ? <Spinner /> : <ul className="listContainer">
                             {console.log("usuarios: ", users)}
                             {users.map((user, index) => {
-                                console.log(user)
                                 const id = user.uid
                                 const email = user.email
                                 return (
