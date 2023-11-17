@@ -32,6 +32,7 @@ const storage = getStorage();
 export const collRef = collection(dataBase, 'Solicitações')
 export const userRef = collection(dataBase, 'Usuários')
 export const clientRef = collection(dataBase, 'Clientes')
+export const categoryRef = collection(dataBase, 'Categorias')
 
 // Collection of Data
 getDocs(collRef)
@@ -50,6 +51,8 @@ getDocs(collRef)
 
 // Queries
 const q = query(collRef, orderBy("ListName", "asc"))
+const clientsQuery = query(clientRef, orderBy("clientName", "asc"));
+const categoryQuery = query(categoryRef, orderBy("name", "asc"));
 
 // Real Time collection of Data
 onSnapshot(q, (snap) => {
@@ -65,9 +68,6 @@ onSnapshot(q, (snap) => {
   console.log("fetch")
 })
 
-
-const clientsQuery = query(clientRef, orderBy("clientName", "asc"));
-
 onSnapshot(clientsQuery, (snap) => {
   state.Clients = [];
 
@@ -79,6 +79,19 @@ onSnapshot(clientsQuery, (snap) => {
     state.Clients.push(final);
   });
   console.log("Clientes:", state.Clients);
+});
+
+onSnapshot(categoryQuery, (snap) => {
+  state.Category = [];
+
+  snap.docs.forEach((doc) => {
+    const result = doc.data();
+    const id = doc.id;
+    const final = { result, id };
+    console.log("final: ", final);
+    state.Category.push(final);
+  });
+  console.log("Categorias:", state.Category);
 });
 
 export async function addDocuments(data, setLoading, event, file) {
@@ -154,7 +167,7 @@ export async function addClients(clientData, setLoading, event) {
     const docRef = await addDoc(clientRef, clientObject);
     console.log("Cliente adicionado com ID:", docRef.id);
     event.target.reset()
-    state.message = "Cliente adicionado com sucesso!"
+    state.message = "Empresa adicionada com sucesso!"
   } catch (error) {
     console.error("Erro ao adicionar o cliente:", error);
     throw error;
@@ -175,7 +188,7 @@ export async function editClient(event, id, setLoading, conclusion) {
   updateDoc(docRef, data)
   setLoading(false)
   conclusion()
-  state.message = "Cliente Atualizado com sucesso!"
+  state.message = "Empresa atualizada com sucesso!"
 }
 
 export function deleteClients(id, onClose) {
@@ -183,7 +196,54 @@ export function deleteClients(id, onClose) {
   deleteDoc(docRef)
     .then(() => {
       onClose()
-      state.message = "Cliente deletado com sucesso!"
+      state.message = "Empresa excluida com sucesso!"
+    })
+    .catch(err => state.message = err.message)
+}
+// -------------- CATEGORIA ------------- //
+export async function addCategory(data, setLoading, event) {
+  event.preventDefault();
+  setLoading(true)
+  try {
+    // Converter FormData em um objeto JavaScript
+    const categoryObject = {};
+    data.forEach((value, key) => {
+      categoryObject[key] = value;
+    });
+
+    // Adicionar o categoria ao Firestore
+    const docRef = await addDoc(categoryRef, categoryObject);
+    console.log("Categoria adicionada com ID:", docRef.id);
+    event.target.reset()
+    state.message = "Categoria adicionada com sucesso!"
+  } catch (error) {
+    console.error("Erro ao adicionar o cliente:", error);
+    throw error;
+  } finally {
+    setLoading(false);
+  }
+}
+export async function editCategory(event, id, setLoading, conclusion) {
+  event.preventDefault()
+  setLoading(true)
+  const docRef = doc(dataBase, 'Categorias', id)
+  const formData = new FormData(event.target);
+  const data = {};
+  formData.forEach((value, key) => {
+    data[key] = value;
+  });
+  updateDoc(docRef, data)
+  setLoading(false)
+  conclusion()
+  state.message = "Categoria atualizada com sucesso!"
+}
+
+export function deleteCategory(id, onClose) {
+  const docRef = doc(dataBase, 'Categorias', id)
+  deleteDoc(docRef)
+    .then(() => {
+      onClose()
+      state.message = "Categoria excluida com sucesso!"
     })
     .catch(err => state.message = err.message)
 }
@@ -250,6 +310,13 @@ export function createUserFirebase(event, setLoading) {
             permission: data.permission,
             CreatedAT: serverTimestamp(),
           };
+          if (data.Name) {
+            userObject["category"] = data.Name
+            userObject["categoryId"] = data.CategoryId
+          } else {
+            userObject["category"] = ""
+            userObject["categoryId"] = ""
+          }
 
           setDoc(userDocRef, userObject)
             .then(() => {
@@ -306,13 +373,15 @@ export const getUser = (account, setInfo, setLoading, setModal) => {
   const userName = doc(dataBase, "Usuários", userId)
   getDoc(userName)
     .then((name) => {
-      const permission = name.data().permission
-      const data = name.data().CreatedAT
+      const result = name.data()
+
       setInfo({
         id: userId,
         email: userEmail,
-        permission: permission,
-        data: data
+        permission: result.permission,
+        data: result.CreatedAT,
+        category: result.category,
+        categoryId: result.categoryId
       })
       setLoading(false)
     })
@@ -333,7 +402,7 @@ export function editUser(e, userId, setLoading, close) {
     ChangePassword(userId, data.password,)
   }
   UpdateUserDisplayName(userId, data.user, setLoading)
-  updateDoc(docRef, { permission: data.permission })
+  updateDoc(docRef, { permission: data.permission, category: data.category, categoryId: data.categoryId, })
   close()
 }
 

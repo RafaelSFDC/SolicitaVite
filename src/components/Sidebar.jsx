@@ -1,6 +1,8 @@
 import React from "react";
 import { PiListChecksBold, PiListPlusBold, PiUsersBold, PiUserCirclePlusBold } from "react-icons/pi";
 import { BsFileEarmarkPersonFill, BsPersonCheckFill } from "react-icons/bs";
+import { TbCategory, TbCategoryPlus } from "react-icons/tb";
+
 import state from "../store";
 import { Link } from "react-router-dom";
 import { useSnapshot } from "valtio";
@@ -43,7 +45,19 @@ const Sidebar = () => {
             <div>
                 <Link to="/addClients" className={state.activePage === "/addClients" ? "sidebarLinks active" : "sidebarLinks"}>
                     <BsPersonCheckFill />
-                    <p>Adicionar Impresas</p>
+                    <p>Adicionar Empresas</p>
+                </Link>
+            </div>
+            <div>
+                <Link to="/category" className={state.activePage === "/category" ? "sidebarLinks active" : "sidebarLinks"}>
+                    <TbCategory />
+                    <p>Categorias</p>
+                </Link>
+            </div>
+            <div>
+                <Link to="/addCategory" className={state.activePage === "/addCategory" ? "sidebarLinks active" : "sidebarLinks"}>
+                    <TbCategoryPlus />
+                    <p>Adicionar Categorias</p>
                 </Link>
             </div>
         </div>

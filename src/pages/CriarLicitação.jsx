@@ -1,17 +1,46 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { ColorRing } from 'react-loader-spinner'
 import { FaFilePdf } from "react-icons/fa6";
 import { addDocuments } from "../FirebaseConfig";
 import determineActivePage from '../hooks/Functions';
 import SelectClient from "../components/SelectClient";
 import Spinner from "../components/Spinner";
+import SelectCategory from "../components/SelectCategory";
 
 const CriarLicitação = () => {
     const [loading, setLoading] = useState(false)
     const [edital, setEdital] = useState('Nenhum arquivo selecionado');
+    // Estado para armazenar o ID selecionado
+    const [idSelecionado, setIdSelecionado] = useState('');
+    const [cartegoryId, setCartegoryId] = useState('');
+
+    // Função para lidar com a alteração no select
+    const handleSelectChange = (event) => {
+        // Obtém o ID diretamente da opção selecionada
+        const novoIdSelecionado = event.target.options[event.target.selectedIndex].id;
+
+        // Atualiza o estado com o novo ID selecionado
+        setIdSelecionado(novoIdSelecionado);
+
+        // Se desejar, você pode imprimir o valor do ID selecionado no console para verificar
+        console.log('ID selecionado:', novoIdSelecionado);
+    };
+    const handleCategory = (event) => {
+        // Obtém o ID diretamente da opção selecionada
+        const novoIdSelecionado = event.target.options[event.target.selectedIndex].id;
+
+        // Atualiza o estado com o novo ID selecionado
+        setCartegoryId(novoIdSelecionado);
+
+        // Se desejar, você pode imprimir o valor do ID selecionado no console para verificar
+        console.log('ID selecionado:', novoIdSelecionado);
+    };
+
+
     useEffect(() => {
         determineActivePage()
     }, []); // Chame isso quando o componente for montado (carregamento inicial)
+
 
 
     const formHandler = (event) => {
@@ -28,17 +57,19 @@ const CriarLicitação = () => {
             return;
         }
 
+
         // Restante dos dados a serem enviados
         const data = {
             ListName: formData.get("listName"),
             Title: formData.get("Title"),
             Name: formData.get("Name"),
-            Email: formData.get("Email"),
             observ: formData.get("observ"),
             Desc: formData.get("Desc"),
             Date: formData.get("Date"),
+            ClientId: formData.get("idSelecionado"),
+            CategoryId: formData.get("CategoryId"),
         };
-
+        // console.log(data)
         addDocuments(data, setLoading, event, file);
     };
 
@@ -76,20 +107,20 @@ const CriarLicitação = () => {
                             <textarea rows={1} type="text" name="Title" required />
                         </div>
                         <div className="form-field">
-                            <p>Nome do Solicitante</p>
-                            <SelectClient />
+                            <p>Empresa Solicitante</p>
+                            <SelectClient onChange={handleSelectChange} />
                         </div>
                         <div className="form-field">
-                            <p>Email</p>
-                            <input type="email" name="Email" required />
+                            <p>Categoria</p>
+                            <SelectCategory onChange={handleCategory} />
                         </div>
                         <div className="form-field">
                             <p>Observações(Opcional)</p>
                             <textarea rows={1} type="text" name="observ" />
                         </div>
                         <div className="form-field">
-                            <p>Descrição da Solicitação</p>
-                            <textarea rows={1} type="text" name="Desc" required />
+                            <p>Descrição da Solicitação(Opcional)</p>
+                            <textarea rows={1} type="text" name="Desc" />
                         </div>
                         <div className="form-field">
                             <p>Data de entrega</p>
@@ -105,6 +136,10 @@ const CriarLicitação = () => {
                                 </label>
                             </div>
                         </div>
+                        {/* Campo oculto para armazenar o ID selecionado */}
+                        <input type="hidden" name="idSelecionado" value={idSelecionado} />
+                        {/* Campo oculto para armazenar o ID selecionado */}
+                        <input type="hidden" name="CategoryId" value={cartegoryId} />
                         {loading ?
                             <button style={{ background: "transparent", border: "none" }}>
                                 <Spinner />

@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from "react";
 import state from '../store/index'
-import { AiFillDelete, AiFillInfoCircle, AiFillEdit, AiFillCloseSquare } from "react-icons/ai";
-import { deleteDocuments, updateDocument } from "../FirebaseConfig";
+import { AiFillDelete, AiFillInfoCircle, AiFillEdit } from "react-icons/ai";
 import { useSnapshot } from "valtio";
 import determineActivePage from "../hooks/Functions";
-import ClientesModal from './../modals/ClientesModal';
+import CategoriaModal from "../modals/CategoriaModal";
 
 
 const Categoria = () => {
     const snap = useSnapshot(state);
-    const clients = JSON.parse(JSON.stringify(snap.Clients))
+    const clients = JSON.parse(JSON.stringify(snap.Category))
 
     const [modal, setModal] = useState(false);
     const [info, setInfo] = useState("");
@@ -24,20 +23,6 @@ const Categoria = () => {
         console.log("index refernce: ", clients[index])
         console.log(info)
     };
-    const timeStamp = (time) => {
-        const timeformat = time.seconds
-        const dateFormat = new Date(timeformat * 1000)
-        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: "numeric", minute: "numeric", second: "numeric" };
-        const finalDate = dateFormat.toLocaleDateString(undefined, options)
-        return (finalDate)
-    }
-    function formatDate(date) {
-        const formattedDate = new Date(date);
-        const day = String(formattedDate.getDate()).padStart(2, '0');
-        const month = String(formattedDate.getMonth() + 1).padStart(2, '0'); // Mês é base 0
-        const year = formattedDate.getFullYear();
-        return `${day}/${month}/${year}`;
-    }
 
     useEffect(() => {
         determineActivePage()
@@ -45,14 +30,14 @@ const Categoria = () => {
 
     return (
         <div className="container">
-            <ClientesModal
+            <CategoriaModal
                 isOpen={modal}
                 type={type}
                 value={info}
-                onClose={modalToggle}
+                onClose={() => modalToggle(null)}
             />
             <div className="containerContent">
-                <h1 className="contentHeader">Lista de Clientes</h1>
+                <h1 className="contentHeader">Lista de Categorias</h1>
                 <div className="contentBody">
                     {<ul className="listContainer">
                         {clients.map((item, index) => {
@@ -61,7 +46,7 @@ const Categoria = () => {
                             return (
                                 <li key={id} className="list-container">
                                     <div className="licit-container">
-                                        <p>Nome do cliente: {result.clientName}</p>
+                                        <p>Nome da categoria: {result.name}</p>
                                     </div>
                                     <div className="buttonContainer">
                                         <button className="edit" onClick={() => { modalToggle(index); setType("Edit") }} >

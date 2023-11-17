@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import state from '../store/index'
 import { AiFillDelete, AiFillInfoCircle, AiFillEdit, AiFillCloseSquare } from "react-icons/ai";
-import { deleteDocuments, updateDocument } from "../FirebaseConfig";
 import { useSnapshot } from "valtio";
 import determineActivePage from "../hooks/Functions";
 import ClientesModal from './../modals/ClientesModal';
@@ -24,21 +23,6 @@ const Clientes = () => {
         console.log("index refernce: ", clients[index])
         console.log(info)
     };
-    const timeStamp = (time) => {
-        const timeformat = time.seconds
-        const dateFormat = new Date(timeformat * 1000)
-        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: "numeric", minute: "numeric", second: "numeric" };
-        const finalDate = dateFormat.toLocaleDateString(undefined, options)
-        return (finalDate)
-    }
-    function formatDate(date) {
-        const formattedDate = new Date(date);
-        const day = String(formattedDate.getDate()).padStart(2, '0');
-        const month = String(formattedDate.getMonth() + 1).padStart(2, '0'); // Mês é base 0
-        const year = formattedDate.getFullYear();
-        return `${day}/${month}/${year}`;
-    }
-
     useEffect(() => {
         determineActivePage()
     }, []);
@@ -49,7 +33,7 @@ const Clientes = () => {
                 isOpen={modal}
                 type={type}
                 value={info}
-                onClose={modalToggle}
+                onClose={() => modalToggle(null)}
             />
             <div className="containerContent">
                 <h1 className="contentHeader">Lista de Empresas</h1>
@@ -61,7 +45,7 @@ const Clientes = () => {
                             return (
                                 <li key={id} className="list-container">
                                     <div className="licit-container">
-                                        <p>Nome do cliente: {result.clientName}</p>
+                                        <p>Nome da Empresa: {result.clientName}</p>
                                     </div>
                                     <div className="buttonContainer">
                                         <button className="edit" onClick={() => { modalToggle(index); setType("Edit") }} >

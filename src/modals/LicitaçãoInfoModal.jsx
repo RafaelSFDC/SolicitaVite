@@ -102,24 +102,16 @@ const LicitationInfoModal = ({ isOpen, type, value, onClose, }) => {
                                 <p>{info.Name}</p>
                             </div>
                             <div>
-                                <span>Email: </span>
-                                <p>{info.Email}</p>
-                            </div>
-                            <div>
                                 <span>Observações: </span>
                                 <p>{info.observ ? info.observ : "Nenhuma"}</p>
                             </div>
                             <div>
                                 <span>Descrição: </span>
-                                <p>{info.Desc}</p>
+                                <p>{info.Desc ? info.Desc : "Nenhuma"}</p>
                             </div>
                             <div>
                                 <span>Data limite de entrega: </span>
                                 <p>{info.Date}</p>
-                            </div>
-                            <div>
-                                <span>Titulo: </span>
-                                <p>{info.Title}</p>
                             </div>
                             <div>
                                 <span>Edital: </span>

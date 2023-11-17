@@ -1,16 +1,29 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Modal from 'react-modal';
 import { AiFillCloseSquare, AiFillDelete } from 'react-icons/ai';
 
 import { deleteClients, editUser } from '../FirebaseConfig';
 import Spinner from '../components/Spinner';
 import { DeleteTheUser } from "../hooks/AxiosHandler";
+import SelectCategory from "../components/SelectCategory";
 
 const UsuariosModal = ({ isOpen, type, value, onClose, setReload, userInfo }) => {
     const [loading, setLoading] = useState(false);
-    if (!value) {
-        return null; // Retorna null se value não existir
-    }
+    const [userType, setUserType] = useState(null)
+    const [cartegoryId, setCartegoryId] = useState("");
+    const data = value
+    const user = userInfo
+    useEffect(() => {
+        setUserType(data.permission)
+        if (data.permission === "Usuario") {
+            setCartegoryId(data.CategoryId)
+        }
+        console.log("As informações do usuário", data)
+    }, [data]);
+
+    // if (!value) {
+    //     return null; // Retorna null se value não existir
+    // }
 
     function convertDate(createdAt) {
         if (!createdAt || !createdAt.seconds || !createdAt.nanoseconds) {
@@ -21,9 +34,21 @@ const UsuariosModal = ({ isOpen, type, value, onClose, setReload, userInfo }) =>
         const date = new Date(milliseconds);
         return date.toLocaleString(); // Você pode ajustar o formato conforme necessário
     }
-    const data = value
-    const user = userInfo
-    console.log("A data: ", data)
+    const handleCategory = (event) => {
+        // Obtém o ID diretamente da opção selecionada
+        const novoIdSelecionado = event.target.options[event.target.selectedIndex].id;
+
+        // Atualiza o estado com o novo ID selecionado
+        setCartegoryId(novoIdSelecionado);
+
+        // Se desejar, você pode imprimir o valor do ID selecionado no console para verificar
+        console.log('ID selecionado:', novoIdSelecionado);
+    };
+    const userTypeHandler = (event) => {
+        const selectedUserType = event.target.value;
+        setUserType(selectedUserType);
+    };
+
     return (
         value ? (
             <Modal overlayClassName="modalOverlay" className="modal" isOpen={isOpen} onRequestClose={onClose} contentLabel="Modal">
@@ -39,13 +64,24 @@ const UsuariosModal = ({ isOpen, type, value, onClose, setReload, userInfo }) =>
                             </div>
                             <div className="form-field">
                                 <p>Tipo de Usuário</p>
-                                <select name="permission" defaultValue={data.permission ? data.permission : ""} required>
+                                <select name="permission" defaultValue={data.permission ? data.permission : ""} required onChange={userTypeHandler}>
                                     <option value="" disabled>Selecione o nivel de Permissão</option>
                                     <option value="Usuario">Usuario</option>
                                     <option value="Editor">Editor</option>
                                     <option value="Admin">Admin</option>
                                 </select>
                             </div>
+                            {userType === "Usuario" ?
+                                <div className="form-field">
+                                    <p>Categoria</p>
+                                    <SelectCategory defaultValue={data.category} onChange={handleCategory} />
+                                </div>
+                                : null
+                            }
+                            {userType === "Usuario" ?
+                                < input type="hidden" name="CategoryId" value={cartegoryId} />
+                                : null
+                            }
                             <div className="form-field">
                                 <p>Senha:</p>
                                 <input name="password" type="password" />
