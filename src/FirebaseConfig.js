@@ -5,6 +5,7 @@ import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "fire
 import { createUserWithEmailAndPassword, getAuth, signOut, signInWithEmailAndPassword, onAuthStateChanged, updateProfile } from "firebase/auth";
 import state from './store/index';
 import { ChangePassword, Notify, UpdateUserDisplayName } from "./hooks/AxiosHandler";
+import { formatForm } from "./hooks/Functions";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -285,55 +286,36 @@ export function updateDocument(e, id, conclusion) {
 
 
 // Create a User
-export function createUserFirebase(event, setLoading) {
-  event.preventDefault();
+export async function createUserFirebase(event, setLoading) {
+  const form = formatForm(event);
   setLoading(true);
-  const formData = new FormData(event.target);
-  const data = {};
-  formData.forEach((value, key) => {
-    data[key] = value;
-  });
   event.target.reset();
 
+  const { email, password, userName, permission, Name, CategoryId } = form;
   const auth = getAuth();
 
-  createUserWithEmailAndPassword(auth, data.email, data.password)
-    .then((cred) => {
-      const userID = cred.user.uid;
-      const userDisplayName = data.userName; // Define o displayName a partir dos dados do formulário
+  try {
+    const cred = await createUserWithEmailAndPassword(auth, email, password);
+    const userID = cred.user.uid;
 
-      // Configura o displayName do usuário
-      updateProfile(cred.user, { displayName: userDisplayName })
-        .then(() => {
-          const userDocRef = doc(userRef, userID);
-          const userObject = {
-            permission: data.permission,
-            CreatedAT: serverTimestamp(),
-          };
-          if (data.Name) {
-            userObject["category"] = data.Name
-            userObject["categoryId"] = data.CategoryId
-          } else {
-            userObject["category"] = ""
-            userObject["categoryId"] = ""
-          }
+    await updateProfile(cred.user, { displayName: userName });
 
-          setDoc(userDocRef, userObject)
-            .then(() => {
-              setLoading(false);
-              state.message = "Usuário criado com sucesso!";
-            })
-            .catch((error) => {
-              console.error('Erro ao adicionar o documento:', error);
-            });
-        })
-        .catch((error) => {
-          console.error('Erro ao atualizar o displayName:', error);
-        });
-    })
-    .catch((err) => {
-      console.log(err.message);
-    });
+    const userDocRef = doc(userRef, userID);
+    const userObject = {
+      permission,
+      CreatedAT: serverTimestamp(),
+      category: Name || "",
+      categoryId: CategoryId || "",
+    };
+
+    await setDoc(userDocRef, userObject);
+
+    setLoading(false);
+    state.message = "Usuário criado com sucesso!";
+  } catch (error) {
+    console.error('Erro ao adicionar o documento:', error);
+    console.log(error.message);
+  }
 }
 
 // Login
@@ -352,7 +334,7 @@ export function LogUser(email, password, setLoading) {
 }
 
 // Logout
-export function logOut(navigate) {
+export function logOut() {
   signOut(FIREBASE_AUTH)
     .then(() => {
       // Logout bem-sucedido

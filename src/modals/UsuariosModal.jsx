@@ -1,14 +1,11 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Modal from 'react-modal';
 import { AiFillCloseSquare, AiFillDelete } from 'react-icons/ai';
-
-import { deleteClients, editUser } from '../FirebaseConfig';
-import Spinner from '../components/Spinner';
+import { editUser } from '../FirebaseConfig';
 import { DeleteTheUser } from "../hooks/AxiosHandler";
 import SelectCategory from "../components/SelectCategory";
 
 const UsuariosModal = ({ isOpen, type, value, onClose, setReload, userInfo }) => {
-    const [loading, setLoading] = useState(false);
     const [userType, setUserType] = useState(null)
     const [cartegoryId, setCartegoryId] = useState("");
     const data = value
@@ -20,10 +17,6 @@ const UsuariosModal = ({ isOpen, type, value, onClose, setReload, userInfo }) =>
         }
         console.log("As informações do usuário", data)
     }, [data]);
-
-    // if (!value) {
-    //     return null; // Retorna null se value não existir
-    // }
 
     function convertDate(createdAt) {
         if (!createdAt || !createdAt.seconds || !createdAt.nanoseconds) {

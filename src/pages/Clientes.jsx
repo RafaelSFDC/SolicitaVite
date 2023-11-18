@@ -5,7 +5,6 @@ import { useSnapshot } from "valtio";
 import determineActivePage from "../hooks/Functions";
 import ClientesModal from './../modals/ClientesModal';
 
-
 const Clientes = () => {
     const snap = useSnapshot(state);
     const clients = JSON.parse(JSON.stringify(snap.Clients))

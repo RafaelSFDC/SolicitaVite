@@ -5,10 +5,11 @@ import { createUserFirebase } from "../FirebaseConfig";
 import determineActivePage from "../hooks/Functions";
 import SelectCategory from "../components/SelectCategory";
 
+
 const CriarUsuarios = () => {
     const [loading, setLoading] = useState(false)
     const [userType, setUserType] = useState(false)
-    const [cartegoryId, setCartegoryId] = useState('');
+    const [cartegoryId, setCategoryId] = useState('');
 
     const create = (e) => {
         createUserFirebase(e, setLoading)
@@ -19,16 +20,9 @@ const CriarUsuarios = () => {
     }, []);
 
     const handleCategory = (event) => {
-        // Obtém o ID diretamente da opção selecionada
         const novoIdSelecionado = event.target.options[event.target.selectedIndex].id;
-
-        // Atualiza o estado com o novo ID selecionado
-        setCartegoryId(novoIdSelecionado);
-
-        // Se desejar, você pode imprimir o valor do ID selecionado no console para verificar
-        console.log('ID selecionado:', novoIdSelecionado);
+        setCategoryId(novoIdSelecionado);
     };
-
 
     const userTypeHandler = (event) => {
         const selectedUserType = event.target.value;
@@ -58,23 +52,26 @@ const CriarUsuarios = () => {
                             </select>
                         </div>
                         {userType === "Usuario" ?
-                            <div className="form-field">
-                                <p>Categoria</p>
-                                <SelectCategory onChange={handleCategory} required={true} />
-                            </div>
-                            : null
-                        }
-                        {userType === "Usuario" ?
-                            < input type="hidden" name="CategoryId" value={cartegoryId} />
+                            <>
+                                <div className="form-field">
+                                    <p>Categoria</p>
+                                    <SelectCategory onChange={handleCategory} required={true} />
+                                </div>
+                                < input type="hidden" name="CategoryId" value={cartegoryId} />
+                            </>
                             : null
                         }
                         <div className="form-field">
                             <p>Senha</p>
                             <input name="password" required />
                         </div>
-                        {loading ? <button style={{ background: "transparent", border: "none" }}>
-                            <ColorRing />
-                        </button> : <button className="send-button" type="submit">Criar Usuário</button>}
+                        {loading ? (
+                            <button style={{ background: "transparent", border: "none" }}>
+                                <ColorRing />
+                            </button>
+                        ) : (
+                            <button className="send-button" type="submit">Criar Usuário</button>
+                        )}
                     </form>
                 </div>
             </div>
