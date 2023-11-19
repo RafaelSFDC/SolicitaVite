@@ -2,7 +2,7 @@ import React from "react";
 import { PiListChecksBold, PiListPlusBold, PiUsersBold, PiUserCirclePlusBold } from "react-icons/pi";
 import { BsFileEarmarkPersonFill, BsPersonCheckFill } from "react-icons/bs";
 import { TbCategory, TbCategoryPlus } from "react-icons/tb";
-
+import { motion } from "framer-motion";
 import state from "../store";
 import { Link } from "react-router-dom";
 import { useSnapshot } from "valtio";

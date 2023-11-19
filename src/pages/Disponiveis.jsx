@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import state from '../store/index'
-import { AiFillDelete, AiFillInfoCircle, AiFillEdit, AiFillCloseSquare } from "react-icons/ai";
-import { deleteDocuments, updateDocument } from "../FirebaseConfig";
+import { AiFillDelete, AiFillInfoCircle, AiFillEdit } from "react-icons/ai";
 import { useSnapshot } from "valtio";
 import determineActivePage from "../hooks/Functions";
 import LicitationInfoModal from './../modals/LicitaçãoInfoModal';
+import { motion } from 'framer-motion';
+import ContainerMotion from "../components/ContainerMotion";
 
 
 const Disponiveis = () => {
@@ -22,9 +23,6 @@ const Disponiveis = () => {
         if (index !== null && index !== undefined) {
             setInfo(tasksValue[index]);
         }
-        console.log("index: ", index)
-        console.log("index refernce: ", tasksValue[index])
-        console.log(info)
     };
 
     const timeStamp = (time) => {
@@ -48,12 +46,12 @@ const Disponiveis = () => {
     }, [tasks]);
 
 
-    return <div className="container">
+    return <ContainerMotion className="container">
         <LicitationInfoModal
             isOpen={modal}
             type={type}
             value={info}
-            onClose={modalToggle}
+            onClose={() => modalToggle()}
         />
         <div className="containerContent">
             <h1 className="contentHeader">Licitações Disponiveis</h1>
@@ -97,7 +95,7 @@ const Disponiveis = () => {
 
         </div>
 
-    </div>;
+    </ContainerMotion>;
 };
 
 export default Disponiveis;

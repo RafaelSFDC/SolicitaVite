@@ -5,6 +5,7 @@ import { GetTheUsers } from "../hooks/AxiosHandler";
 import determineActivePage from "../hooks/Functions";
 import UsuariosModal from './../modals/UsuariosModal';
 import Spinner from "../components/Spinner";
+import ContainerMotion from "../components/ContainerMotion";
 
 const Usuarios = () => {
     const [users, setUsers] = useState([]);
@@ -32,7 +33,7 @@ const Usuarios = () => {
         determineActivePage()
     }, [reload]);
     return (
-        <div className="container">
+        <ContainerMotion className="container">
             <UsuariosModal isOpen={modal} onClose={() => modalToggle()} userInfo={userInfo} value={info} type={type} setReload={setReload} />
             <div className="containerContent">
                 <div className="contentHeader">Usuários</div>
@@ -66,7 +67,7 @@ const Usuarios = () => {
                 </div>
             </div>
 
-        </div>
+        </ContainerMotion>
     )
 };
 

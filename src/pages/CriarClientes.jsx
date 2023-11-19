@@ -5,6 +5,7 @@ import { addClients } from "../FirebaseConfig";
 import determineActivePage from "../hooks/Functions";
 import InputMask from 'react-input-mask';
 import SelectCategory from "../components/SelectCategory";
+import ContainerMotion from "../components/ContainerMotion";
 
 const CriarClientes = () => {
     const [loading, setLoading] = useState(false)
@@ -32,7 +33,7 @@ const CriarClientes = () => {
     }, []);
 
     return (
-        <div className="container">
+        <ContainerMotion className="container">
             <div className="containerContent">
                 <h1 className="contentHeader">Adicionar Empresa</h1>
                 <div className="contentBody">
@@ -85,7 +86,7 @@ const CriarClientes = () => {
                 </div>
 
             </div>
-        </div>
+        </ContainerMotion>
     )
 };
 

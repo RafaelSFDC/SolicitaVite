@@ -4,6 +4,7 @@ import { AiFillDelete, AiFillInfoCircle, AiFillEdit, AiFillCloseSquare } from "r
 import { useSnapshot } from "valtio";
 import determineActivePage from "../hooks/Functions";
 import ClientesModal from './../modals/ClientesModal';
+import ContainerMotion from "../components/ContainerMotion";
 
 const Clientes = () => {
     const snap = useSnapshot(state);
@@ -27,7 +28,7 @@ const Clientes = () => {
     }, []);
 
     return (
-        <div className="container">
+        <ContainerMotion className="container">
             <ClientesModal
                 isOpen={modal}
                 type={type}
@@ -65,7 +66,7 @@ const Clientes = () => {
                 </div>
 
             </div>
-        </div>
+        </ContainerMotion>
     )
 };
 

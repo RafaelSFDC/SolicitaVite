@@ -6,6 +6,7 @@ import determineActivePage from '../hooks/Functions';
 import SelectClient from "../components/SelectClient";
 import Spinner from "../components/Spinner";
 import SelectCategory from "../components/SelectCategory";
+import ContainerMotion from "../components/ContainerMotion";
 
 const CriarLicitação = () => {
     const [loading, setLoading] = useState(false)
@@ -93,7 +94,7 @@ const CriarLicitação = () => {
         }
     };
     return (
-        <div className="container">
+        <ContainerMotion className="container">
             <div className="containerContent">
                 <div className="contentHeader">Criar Licitação</div>
                 <div className="contentBody">
@@ -148,7 +149,7 @@ const CriarLicitação = () => {
                     </form>
                 </div>
             </div>
-        </div>
+        </ContainerMotion>
     )
 };
 

@@ -3,6 +3,8 @@ import { useState } from "react";
 import { ColorRing } from 'react-loader-spinner'
 import { addCategory, addClients, createUserFirebase } from "../FirebaseConfig";
 import determineActivePage from "../hooks/Functions";
+import ButtonMotion from "../components/ButtonMotion";
+import ContainerMotion from "../components/ContainerMotion";
 
 const CriarCategoria = () => {
     const [loading, setLoading] = useState(false)
@@ -17,7 +19,7 @@ const CriarCategoria = () => {
     }, []);
 
     return (
-        <div className="container">
+        <ContainerMotion className="container">
             <div className="containerContent">
                 <h1 className="contentHeader">Criar Categoria</h1>
                 <div className="contentBody">
@@ -26,14 +28,18 @@ const CriarCategoria = () => {
                             <p>Nome da Categoria</p>
                             <input type="text" id="name" name="name" required />
                         </div>
-                        {loading ? <button style={{ background: "transparent", border: "none" }}>
-                            <ColorRing />
-                        </button> : <button className="send-button" type="submit">Cadastrar Categoria</button>}
+                        {loading ?
+                            <button style={{ background: "transparent", border: "none" }}>
+                                <ColorRing />
+                            </button>
+                            : <ButtonMotion className="send-button" type="submit">
+                                Cadastrar Categoria
+                            </ButtonMotion>}
                     </form>
                 </div>
 
             </div>
-        </div>
+        </ContainerMotion>
     )
 };
 

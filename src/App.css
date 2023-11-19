@@ -447,57 +447,16 @@ h2 {
 
 
 /* MODAIS */
-.ReactModal__Content {
-  animation: baseModalSlideDown 0.3s ease-in-out forwards;
-}
-
-.ReactModal__Content.closed {
-  animation: baseModalSlideUp 0.3s ease-in-out forwards;
-}
-
-@keyframes baseModalSlideDown {
-  from {
-    transform: translate(-50%, -100%)
-  }
-
-  to {
-    transform: translate(-50%, -50%)
-  }
-}
-
-@keyframes baseModalSlideUp {
-  from {
-    transform: translate(-50%, -50%)
-  }
-
-  to {
-    transform: translate(-50%, -100%)
-  }
-}
-
-
-
-.modalOverlay {
-  position: fixed;
+.backdrop {
+  position: absolute;
   top: 0;
   left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  /* Cor de fundo e opacidade */
+  height: 100%;
+  width: 100%;
+  background: #000000e1;
   display: flex;
-  justify-content: center;
   align-items: center;
-  animation: modalOverlayOpen 0.3s ease-in-out forwards;
-}
-
-.ReactModal__Overlay {
-  animation: modalOverlayOpen 0.3s ease-in-out forwards;
-}
-
-.modalOverlay.closed,
-.ReactModal__Overlay.closed {
-  animation: modalOverlayClosed 0.3s ease-in-out forwards;
+  justify-content: center;
 }
 
 .modal {
@@ -506,55 +465,9 @@ h2 {
   overflow: auto;
   border-radius: 4px;
   outline: none;
-  width: 100%;
+  width: fit-content;
   max-width: 1150px;
-  transition: bottom 0.4s ease-in-out;
-  animation: modalSlideUp 3s ease-in-out forwards;
-  transform: translateY(100%);
-  animation: modalSlideDown 0.3s ease-in-out forwards;
-  /* Comece oculto acima da tela */
-}
-
-
-
-@keyframes modalSlideDown {
-  from {
-    transform: translateY(-100%)
-  }
-
-  to {
-    transform: translate(0)
-  }
-}
-
-@keyframes modalSlideUp {
-  from {
-    transform: translateY(0)
-  }
-
-  to {
-    transform: translateY(-100%)
-  }
-}
-
-@keyframes modalOverlayOpen {
-  from {
-    opacity: 0;
-  }
-
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes modalOverlayClosed {
-  from {
-    opacity: 1;
-  }
-
-  to {
-    opacity: 0;
-  }
+  position: relative;
 }
 
 .modal h2 {
@@ -565,6 +478,7 @@ h2 {
   display: flex;
   justify-content: center;
   align-items: center;
+  border-radius: 0;
 }
 
 .modalResultado {
@@ -573,6 +487,9 @@ h2 {
   align-items: center;
   justify-content: center;
   text-align: center;
+  width: 600px;
+  height: 180px;
+  padding: 20px;
 }
 
 .modalResultado p {
@@ -585,7 +502,6 @@ h2 {
   position: absolute;
   top: 10px;
   right: 10px;
-  padding: 5px 10px;
   cursor: pointer;
   font-size: 30px;
   transition: 0.2s ease-in-out;
@@ -599,6 +515,7 @@ h2 {
   display: flex;
   flex-direction: column;
   position: relative;
+  width: 1100px;
 }
 
 .modal-item>svg {

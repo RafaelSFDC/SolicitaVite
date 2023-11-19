@@ -7,6 +7,7 @@ import state from "../store";
 import { LogUser } from "../FirebaseConfig";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import logo from "../assets/images/LOGO SEM FUNDO.1.png"
+import { motion, AnimatePresence } from "framer-motion";
 
 const Login = () => {
     const navigate = useNavigate()
@@ -38,7 +39,7 @@ const Login = () => {
     };
 
     return (
-        <div className="loginContainer">
+        <motion.div className="loginContainer">
             <img src={logo} alt="Solicita Logo" className="logo" />
             <form onSubmit={(e) => signIn(e)} className="login-form">
                 <h3>Bem Vindo!</h3>
@@ -65,7 +66,7 @@ const Login = () => {
                 <p className="fix">Ainda não tem uma conta? <span className="fix">Solicitar</span></p>
             </form>
 
-        </div>
+        </motion.div>
     )
 };
 

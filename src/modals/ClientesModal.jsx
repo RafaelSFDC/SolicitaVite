@@ -1,10 +1,9 @@
-import React, { useState } from "react";
-import Modal from 'react-modal';
+import { useState } from "react";
 import { AiFillCloseSquare, AiFillDelete } from 'react-icons/ai';
-
 import { deleteClients, editClient, } from '../FirebaseConfig';
 import Spinner from '../components/Spinner';
 import SelectCategory from './../components/SelectCategory';
+import ModalMotion from "./ModalMotion";
 
 const ClientesModal = ({ isOpen, type, value, onClose }) => {
     const [loading, setLoading] = useState(false);
@@ -15,7 +14,7 @@ const ClientesModal = ({ isOpen, type, value, onClose }) => {
     const id = data.id
     return (
         value ? (
-            <Modal overlayClassName="modalOverlay" className="modal" isOpen={isOpen} onRequestClose={onClose} contentLabel="Modal">
+            <ModalMotion isOpen={isOpen} onClick={onClose}>
                 <div className="modal-item">
                     <AiFillCloseSquare className="button-icon" onClick={onClose} />
                     <h2>{type === 'Edit' ? 'Editar dados da Empresa' : type === 'Delete' ? 'Deletar Empresa' : 'Informações da Empresa'}</h2>
@@ -106,7 +105,7 @@ const ClientesModal = ({ isOpen, type, value, onClose }) => {
                         </div>
                     )}
                 </div>
-            </Modal>
+            </ModalMotion>
         ) : null
     );
 };

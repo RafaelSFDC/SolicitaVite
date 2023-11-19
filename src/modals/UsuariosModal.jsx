@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import Modal from 'react-modal';
 import { AiFillCloseSquare, AiFillDelete } from 'react-icons/ai';
 import { editUser } from '../FirebaseConfig';
 import { DeleteTheUser } from "../hooks/AxiosHandler";
 import SelectCategory from "../components/SelectCategory";
+import ModalMotion from "./ModalMotion";
 
 const UsuariosModal = ({ isOpen, type, value, onClose, setReload, userInfo }) => {
     const [userType, setUserType] = useState(null)
@@ -44,7 +44,7 @@ const UsuariosModal = ({ isOpen, type, value, onClose, setReload, userInfo }) =>
 
     return (
         value ? (
-            <Modal overlayClassName="modalOverlay" className="modal" isOpen={isOpen} onRequestClose={onClose} contentLabel="Modal">
+            <ModalMotion isOpen={isOpen} onClick={onClose}>
                 <div className="modal-item">
                     <AiFillCloseSquare className="button-icon" onClick={onClose} />
                     <h2>{type === 'Edit' ? 'Editar Usuário' : type === 'Delete' ? 'Deletar Usuário' : 'Informações do Usuário'}</h2>
@@ -116,7 +116,7 @@ const UsuariosModal = ({ isOpen, type, value, onClose, setReload, userInfo }) =>
                         </div>
                     )}
                 </div>
-            </Modal>
+            </ModalMotion>
         ) : null
     );
 };

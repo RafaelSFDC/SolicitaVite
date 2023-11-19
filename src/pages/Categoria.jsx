@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import state from '../store/index'
 import { AiFillDelete, AiFillInfoCircle, AiFillEdit } from "react-icons/ai";
 import { useSnapshot } from "valtio";
 import determineActivePage from "../hooks/Functions";
 import CategoriaModal from "../modals/CategoriaModal";
+import ContainerMotion from "../components/ContainerMotion";
 
 
 const Categoria = () => {
@@ -29,7 +30,7 @@ const Categoria = () => {
     }, []);
 
     return (
-        <div className="container">
+        <ContainerMotion className="container">
             <CategoriaModal
                 isOpen={modal}
                 type={type}
@@ -67,7 +68,7 @@ const Categoria = () => {
                 </div>
 
             </div>
-        </div>
+        </ContainerMotion>
     )
 };
 

@@ -4,6 +4,7 @@ import { ColorRing } from 'react-loader-spinner'
 import { createUserFirebase } from "../FirebaseConfig";
 import determineActivePage from "../hooks/Functions";
 import SelectCategory from "../components/SelectCategory";
+import ContainerMotion from "../components/ContainerMotion";
 
 
 const CriarUsuarios = () => {
@@ -29,7 +30,7 @@ const CriarUsuarios = () => {
         setUserType(selectedUserType);
     };
     return (
-        <div className="container">
+        <ContainerMotion className="container">
             <div className="containerContent">
                 <h1 className="contentHeader">Adicionar Usuário</h1>
                 <div className="contentBody">
@@ -75,7 +76,7 @@ const CriarUsuarios = () => {
                     </form>
                 </div>
             </div>
-        </div>
+        </ContainerMotion>
     )
 };
 

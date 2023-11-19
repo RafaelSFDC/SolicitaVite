@@ -1,21 +1,14 @@
-import React, { useState } from 'react';
-import Modal from 'react-modal';
-import { AiFillCloseSquare, AiFillDelete, AiOutlineDownload } from 'react-icons/ai';
+import { useState } from 'react';
+import { AiFillCloseSquare, AiFillDelete, } from 'react-icons/ai';
 import { FaDownload } from "react-icons/fa";
-
 import { deleteDocuments, updateDocument } from '../FirebaseConfig';
 import { Link } from 'react-router-dom';
 import SelectClient from '../components/SelectClient';
 import Spinner from '../components/Spinner';
-
-Modal.setAppElement('#root'); // Configura o elemento raiz para o modal
-
+import ModalMotion from './ModalMotion';
 const LicitationInfoModal = ({ isOpen, type, value, onClose, }) => {
     const [loading, setLoading] = useState(false);
-    if (!value) {
-        return null; // Retorna null se value não existir
-    }
-    const data = value
+    const data = value || { result: "", id: "" }
     const info = data.result
     const id = data.id
 
@@ -31,7 +24,7 @@ const LicitationInfoModal = ({ isOpen, type, value, onClose, }) => {
 
     return (
         value ? (
-            <Modal overlayClassName="modalOverlay" className="modal" isOpen={isOpen} onRequestClose={onClose} contentLabel="Modal">
+            <ModalMotion isOpen={isOpen} onClick={onClose}>
                 <div className="modal-item">
                     <AiFillCloseSquare className="button-icon" onClick={onClose} />
                     <h2>{type === 'Edit' ? 'Editar Licitação' : type === 'Delete' ? 'Deletar Licitação' : 'Informações'}</h2>
@@ -124,7 +117,7 @@ const LicitationInfoModal = ({ isOpen, type, value, onClose, }) => {
                         </div>
                     )}
                 </div>
-            </Modal>
+            </ModalMotion>
         ) : null
     );
 };

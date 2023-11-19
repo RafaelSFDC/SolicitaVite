@@ -1,9 +1,8 @@
-import React, { useState } from "react";
-import Modal from 'react-modal';
+import { useState } from "react";
 import { AiFillCloseSquare, AiFillDelete } from 'react-icons/ai';
-
 import { deleteCategory, editCategory } from '../FirebaseConfig';
 import Spinner from '../components/Spinner';
+import ModalMotion from "./ModalMotion";
 
 const CategoriaModal = ({ isOpen, type, value, onClose }) => {
     const [loading, setLoading] = useState(false);
@@ -14,7 +13,7 @@ const CategoriaModal = ({ isOpen, type, value, onClose }) => {
     const id = data.id
     return (
         value ? (
-            <Modal overlayClassName="modalOverlay" className="modal" isOpen={isOpen} onRequestClose={onClose} contentLabel="Modal">
+            <ModalMotion isOpen={isOpen} onClick={onClose}>
                 <div className="modal-item">
                     <AiFillCloseSquare className="button-icon" onClick={onClose} />
                     <h2>{type === 'Edit' ? 'Editar dados da Categoria' : type === 'Delete' ? 'Deletar Categoria' : 'Informações da Categoria'}</h2>
@@ -61,7 +60,7 @@ const CategoriaModal = ({ isOpen, type, value, onClose }) => {
                         </div>
                     )}
                 </div>
-            </Modal>
+            </ModalMotion>
         ) : null
     );
 };
