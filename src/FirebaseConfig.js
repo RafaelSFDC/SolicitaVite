@@ -371,6 +371,7 @@ export const getUser = (account, setInfo, setLoading, setModal) => {
     .catch(err => console.log(err))
 }
 
+
 // Update the User
 export function editUser(e, userId, setLoading, close) {
   e.preventDefault()
@@ -388,6 +389,26 @@ export function editUser(e, userId, setLoading, close) {
   close()
 }
 
+export function verifyUser(user) {
+  const userReference = doc(dataBase, 'Usuários', user.uid);
+  return getDoc(userReference)
+    .then((docSnapshot) => {
+      if (docSnapshot.exists()) {
+        const userData = docSnapshot.data();
+        if (userData && userData.permission === 'Usuario') {
+          return false; // Usuário tem permissão "Usuario"
+        } else {
+          return false
+        }
+      } else {
+        return false; // Usuário não encontrado
+      }
+    })
+    .catch((error) => {
+      console.error("Erro ao verificar usuário:", error);
+      return false; // Tratamento de erro, retorne falso por padrão
+    });
+}
 
 
 export const GetUserOnLogin = (userId) => {

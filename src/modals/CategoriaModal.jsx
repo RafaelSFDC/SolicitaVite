@@ -22,7 +22,7 @@ const CategoriaModal = ({ isOpen, type, value, onClose }) => {
                         <form onSubmit={(event) => editCategory(event, id, setLoading, onClose)} className="formContainer licitContainer">
                             <div className="form-field">
                                 <p>Nome da Categoria:</p>
-                                <textarea rows={1} type="text" name='clientName' required defaultValue={info.name} />
+                                <textarea rows={1} type="text" name='name' required defaultValue={info.name} />
                             </div>
                             {/* Campo oculto para armazenar o ID selecionado */}
                             <input type="hidden" name="CategoryId" value={cartegoryId} />
