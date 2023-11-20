@@ -9,9 +9,9 @@ const ContainerMotion = ({ children, className }) => {
                     duration: 0.2,
                     ease: "easeInOut"
                 }}
-                initial={{ scale: 0.99 }}
-                animate={{ scale: 1 }}
-                exit={{ scale: 0 }}
+                initial={{ x: -150, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                exit={{ x: 200 }}
             >
                 {children}
             </motion.div>

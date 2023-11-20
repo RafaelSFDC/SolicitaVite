@@ -1,6 +1,6 @@
 import React from "react";
 import { PiListChecksBold, PiListPlusBold, PiUsersBold, PiUserCirclePlusBold } from "react-icons/pi";
-import { BsFileEarmarkPersonFill, BsPersonCheckFill } from "react-icons/bs";
+import { BsBuildingFill, BsBuildingFillAdd } from "react-icons/bs";
 import { TbCategory, TbCategoryPlus } from "react-icons/tb";
 import { motion } from "framer-motion";
 import state from "../store";
@@ -38,13 +38,13 @@ const Sidebar = () => {
             </div>
             <div>
                 <Link to="/clients" className={state.activePage === "/clients" ? "sidebarLinks active" : "sidebarLinks"}>
-                    <BsFileEarmarkPersonFill />
+                    <BsBuildingFill />
                     <p>Empresas</p>
                 </Link>
             </div>
             <div>
                 <Link to="/addClients" className={state.activePage === "/addClients" ? "sidebarLinks active" : "sidebarLinks"}>
-                    <BsPersonCheckFill />
+                    <BsBuildingFillAdd />
                     <p>Adicionar Empresas</p>
                 </Link>
             </div>
