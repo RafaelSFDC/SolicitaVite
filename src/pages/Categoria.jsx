@@ -9,7 +9,10 @@ import ContainerMotion from "../components/ContainerMotion";
 
 const Categoria = () => {
     const snap = useSnapshot(state);
-    const clients = JSON.parse(JSON.stringify(snap.Category))
+    var clients = snap
+    if (snap.Category) {
+        clients = JSON.parse(JSON.stringify(snap.Category))
+    }
 
     const [modal, setModal] = useState(false);
     const [info, setInfo] = useState("");
@@ -29,6 +32,9 @@ const Categoria = () => {
         determineActivePage()
     }, []);
 
+    if (!snap.Category) {
+        return
+    }
     return (
         <ContainerMotion className="container">
             <CategoriaModal

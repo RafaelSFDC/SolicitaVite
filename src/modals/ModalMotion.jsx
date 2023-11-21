@@ -6,7 +6,7 @@ const ModalMotion = ({ children, onClick, isOpen }) => {
             {isOpen && (
                 <motion.div
                     style={{
-                        position: 'absolute',
+                        position: 'fixed',
                         top: 0,
                         left: 0,
                         height: '100%',

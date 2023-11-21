@@ -109,7 +109,7 @@ const LicitationInfoModal = ({ isOpen, type, value, onClose, }) => {
                             <div>
                                 <span>Edital: </span>
                                 {info.Edital ?
-                                    <Link to={info.Edital} download>
+                                    <Link to={info.Edital} download target="_blank">
                                         <FaDownload /> Baixar Edital
                                     </Link>
                                     : <p>Nenhum Edital</p>}
