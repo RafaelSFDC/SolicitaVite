@@ -55,63 +55,15 @@ export const GetTheUsers = async (setUsers, setLoading) => {
 
 
 // NOTIFICAÇÃO
-export const Notify = (title, category) => {
-    // Gerar a data atual no formato desejado
-    const dateSent = moment().format('MM-DD-YYYY h:mmA');
-
-    // const data = {
-    //     "appId": 14884,
-    //     "appToken": "8eIowtFYCkhSh8eaXJDsqv",
-    //     "title": "Nova Licitação Adicionada!",
-    //     "body": title,
-    //     "dateSent": dateSent
-    // };
-
-    const data = {
-        "appId": 14884,
-        "appToken": "8eIowtFYCkhSh8eaXJDsqv",
-        "bigPictureURL": "",
-        "masterSubID": category,
-        "message": title,
-        "pushData": "",
-        "title": "Nova Licitação Adicionada!"
-    }
-
-    axios.post("https://app.nativenotify.com/api/follow/notification", data, {
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    })
-        .then(response => {
-            console.log('Resposta:', response.data);
-        })
-        .catch(error => {
-            console.error('Erro ao enviar a solicitação:', error);
-        });
-}
-
-
-export const createTopicNotification = (data) => {
+export const Notify = async (title, category) => {
     const body = {
-        "appId": 14884,
-        "appToken": "8eIowtFYCkhSh8eaXJDsqv",
-        "isTopicGroup": true,
-        "masterSubID": data
+        mensagem: title,
+        category: category,
     }
-    axios.post("https://app.nativenotify.com/api/post/follow/master", body, {
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    })
+    try {
+        await axios.post(`${url}enviar-notificacoes`, body);
+        console.log('Notificação enviada com sucesso!');
+    } catch (error) {
+        console.error('Erro ao enviar notificação:', error);
+    }
 }
-export const DeleteTopicNotification = (data) => {
-    console.log(data);
-    axios.delete(`https://app.nativenotify.com/api/follow/master/14884/8eIowtFYCkhSh8eaXJDsqv/${data}`)
-        .then(response => {
-            console.log('Exclusão bem-sucedida:', response);
-        })
-        .catch(error => {
-            console.error('Erro ao excluir notificação:', error);
-        });
-}
-
