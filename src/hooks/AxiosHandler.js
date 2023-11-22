@@ -55,7 +55,7 @@ export const GetTheUsers = async (setUsers, setLoading) => {
 
 
 // NOTIFICAÇÃO
-export const Notify = (title) => {
+export const Notify = (title, category) => {
     // Gerar a data atual no formato desejado
     const dateSent = moment().format('MM-DD-YYYY h:mmA');
 
@@ -71,7 +71,7 @@ export const Notify = (title) => {
         "appId": 14884,
         "appToken": "8eIowtFYCkhSh8eaXJDsqv",
         "bigPictureURL": "",
-        "masterSubID": "Produtos",
+        "masterSubID": category,
         "message": title,
         "pushData": "",
         "title": "Nova Licitação Adicionada!"

@@ -116,7 +116,7 @@ export async function addDocuments(data, setLoading, event, file) {
       console.log("Documento adicionado com ID:", docRef.id, "e dados:", newData);
       state.message = "Licitação adicionada com sucesso!";
       event.target.reset();
-      Notify(data.Title)
+      Notify(data.Title, data.Name)
     }
   } catch (error) {
     console.error("Erro ao adicionar o documento:", error);
