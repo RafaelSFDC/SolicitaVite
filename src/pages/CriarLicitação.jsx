@@ -1,42 +1,39 @@
 import React, { useEffect, useRef, useState } from "react";
-import { ColorRing } from 'react-loader-spinner'
 import { FaFilePdf } from "react-icons/fa6";
-import { addDocuments } from "../FirebaseConfig";
-import determineActivePage from '../hooks/Functions';
+import determineActivePage, { formatForm } from '../hooks/Functions';
 import SelectClient from "../components/SelectClient";
 import Spinner from "../components/Spinner";
-import SelectCategory from "../components/SelectCategory";
 import ContainerMotion from "../components/ContainerMotion";
+import { addDocuments } from "../FirebaseConfig";
 
 const CriarLicitação = () => {
     const [loading, setLoading] = useState(false)
     const [edital, setEdital] = useState('Nenhum arquivo selecionado');
     // Estado para armazenar o ID selecionado
     const [idSelecionado, setIdSelecionado] = useState('');
+    const [category, setCategory] = useState('');
     const [cartegoryId, setCartegoryId] = useState('');
 
     // Função para lidar com a alteração no select
     const handleSelectChange = (event) => {
-        // Obtém o ID diretamente da opção selecionada
-        const novoIdSelecionado = event.target.options[event.target.selectedIndex].id;
+        // Obtém a opção selecionada
+        const opcaoSelecionada = event.target.options[event.target.selectedIndex];
 
-        // Atualiza o estado com o novo ID selecionado
+        // Obtém o ID, category e categoryId diretamente da opção selecionada
+        const novoIdSelecionado = opcaoSelecionada.id;
+        const categorySelecionada = opcaoSelecionada.getAttribute('data-category');
+        const categoryIdSelecionada = opcaoSelecionada.getAttribute('data-categoryId');
+
+        // Atualiza o estado com as novas informações
         setIdSelecionado(novoIdSelecionado);
+        setCategory(categorySelecionada);
+        setCartegoryId(categoryIdSelecionada);
 
-        // Se desejar, você pode imprimir o valor do ID selecionado no console para verificar
+        // Se desejar, você pode imprimir as informações no console para verificar
         console.log('ID selecionado:', novoIdSelecionado);
+        console.log('Category selecionada:', categorySelecionada);
+        console.log('CategoryId selecionada:', categoryIdSelecionada);
     };
-    const handleCategory = (event) => {
-        // Obtém o ID diretamente da opção selecionada
-        const novoIdSelecionado = event.target.options[event.target.selectedIndex].id;
-
-        // Atualiza o estado com o novo ID selecionado
-        setCartegoryId(novoIdSelecionado);
-
-        // Se desejar, você pode imprimir o valor do ID selecionado no console para verificar
-        console.log('ID selecionado:', novoIdSelecionado);
-    };
-
 
     useEffect(() => {
         determineActivePage()
@@ -45,11 +42,9 @@ const CriarLicitação = () => {
 
 
     const formHandler = (event) => {
-        event.preventDefault();
+        const form = formatForm(event)
         setLoading(true);
-
-        const formData = new FormData(event.target);
-        const file = formData.get("Edital");
+        const file = form.Edital
 
         // Verifique se o arquivo foi selecionado
         if (!file) {
@@ -58,21 +53,22 @@ const CriarLicitação = () => {
             return;
         }
 
+        // Extrair valores de Client e adicionar ao objeto form
+        if (form.Client) {
+            const [clientName, category, categoryId, id] = form.Client.split(',');
+            form.ClientName = clientName;
+            form.Category = category;
+            form.CategoryId = categoryId;
+            form.ClientId = id;
 
-        // Restante dos dados a serem enviados
-        const data = {
-            ListName: formData.get("listName"),
-            Title: formData.get("Title"),
-            Name: formData.get("Name"),
-            observ: formData.get("observ"),
-            Desc: formData.get("Desc"),
-            Date: formData.get("Date"),
-            ClientId: formData.get("idSelecionado"),
-            Category: formData.get("Category"),
-            CategoryId: formData.get("CategoryId"),
-        };
-        // console.log(data)
-        addDocuments(data, setLoading, event, file);
+            // Remover a propriedade Client original se necessário
+            delete form.Client;
+            delete form.Edital
+            form.recusas = {}
+            setEdital("Nenhum Arquivo Selecionado")
+        }
+        console.log(form)
+        addDocuments(form, setLoading, event, file);
     };
 
 
@@ -102,7 +98,7 @@ const CriarLicitação = () => {
                     <form onSubmit={formHandler} className="formContainer">
                         <div className="form-field">
                             <p>Nome da Licitação</p>
-                            <textarea rows={1} type="text" name="listName" required />
+                            <textarea rows={1} type="text" name="ListName" required />
                         </div>
                         <div className="form-field">
                             <p>Titulo</p>
@@ -111,10 +107,6 @@ const CriarLicitação = () => {
                         <div className="form-field">
                             <p>Empresa Solicitante</p>
                             <SelectClient onChange={handleSelectChange} />
-                        </div>
-                        <div className="form-field">
-                            <p>Categoria</p>
-                            <SelectCategory onChange={handleCategory} />
                         </div>
                         <div className="form-field">
                             <p>Observações(Opcional)</p>
@@ -140,6 +132,8 @@ const CriarLicitação = () => {
                         </div>
                         {/* Campo oculto para armazenar o ID selecionado */}
                         <input type="hidden" name="idSelecionado" value={idSelecionado} />
+                        {/* Campo oculto para armazenar o ID selecionado */}
+                        <input type="hidden" name="Category" value={category} />
                         {/* Campo oculto para armazenar o ID selecionado */}
                         <input type="hidden" name="CategoryId" value={cartegoryId} />
                         {/* Campo oculto para armazenar o ID selecionado */}

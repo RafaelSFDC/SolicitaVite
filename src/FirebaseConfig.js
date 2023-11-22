@@ -66,7 +66,6 @@ onSnapshot(q, (snap) => {
     console.log(result)
     state.aveliableTasks.push(final)
   })
-  console.log("fetch")
 })
 
 onSnapshot(clientsQuery, (snap) => {
@@ -76,10 +75,8 @@ onSnapshot(clientsQuery, (snap) => {
     const result = doc.data();
     const id = doc.id;
     const final = { result, id };
-    console.log("final: ", final);
     state.Clients.push(final);
-  });
-  console.log("Clientes:", state.Clients);
+  })
 });
 
 onSnapshot(categoryQuery, (snap) => {
@@ -92,7 +89,6 @@ onSnapshot(categoryQuery, (snap) => {
     console.log("final: ", final);
     state.Category.push(final);
   });
-  console.log("Categorias:", state.Category);
 });
 
 export async function addDocuments(data, setLoading, event, file) {

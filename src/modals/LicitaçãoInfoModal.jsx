@@ -41,7 +41,7 @@ const LicitationInfoModal = ({ isOpen, type, value, onClose, }) => {
                             </div>
                             <div className="form-field">
                                 <p>Nome do Solicitante:</p>
-                                <SelectClient defaultValue={info.Name} />
+                                <SelectClient defaultValue={info.ClientName} />
                             </div>
                             <div className="form-field">
                                 <p>Descrição da Solicitação:</p>
@@ -92,7 +92,7 @@ const LicitationInfoModal = ({ isOpen, type, value, onClose, }) => {
                             </div>
                             <div>
                                 <span>Nome do Solicitante: </span>
-                                <p>{info.Name}</p>
+                                <p>{info.ClientName}</p>
                             </div>
                             <div>
                                 <span>Observações: </span>

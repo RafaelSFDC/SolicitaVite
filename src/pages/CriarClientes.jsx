@@ -50,12 +50,22 @@ const CriarClientes = () => {
                             </InputMask>
                         </div>
                         <div className="form-field">
+                            <p>Categoria</p>
+                            <SelectCategory onChange={handleCategory} required={true} />
+                        </div>
+                        <div className="form-field">
                             <p>E-mail</p>
                             <input type="text" id="email" name="email" required />
                         </div>
                         <div className="form-field">
-                            <p>Telefone de Contato (Opcional)</p>
+                            <p>Telefone Fixo (Opcional)</p>
                             <InputMask mask="(99) 9999-9999" maskChar={null}>
+                                {(inputProps) => <input {...inputProps} type="text" id="tel" name="tel" />}
+                            </InputMask>
+                        </div>
+                        <div className="form-field">
+                            <p>Telefone de Contato (Opcional)</p>
+                            <InputMask mask="(99) 99999-9999" maskChar={null}>
                                 {(inputProps) => <input {...inputProps} type="text" id="tel" name="tel" />}
                             </InputMask>
                         </div>
@@ -72,10 +82,6 @@ const CriarClientes = () => {
                             <InputMask mask="99999-999" maskChar={null}>
                                 {(inputProps) => <input {...inputProps} type="text" id="cep" name="cep" />}
                             </InputMask>
-                        </div>
-                        <div className="form-field">
-                            <p>Categoria (Opcional)</p>
-                            <SelectCategory onChange={handleCategory} required={false} />
                         </div>
                         {/* Campo oculto para armazenar o ID selecionado */}
                         <input type="hidden" name="CategoryId" value={cartegoryId} />
