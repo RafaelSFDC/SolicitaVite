@@ -68,6 +68,7 @@ const CriarLicitação = () => {
             Desc: formData.get("Desc"),
             Date: formData.get("Date"),
             ClientId: formData.get("idSelecionado"),
+            Category: formData.get("Category"),
             CategoryId: formData.get("CategoryId"),
         };
         // console.log(data)

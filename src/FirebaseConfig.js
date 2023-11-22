@@ -4,7 +4,7 @@ import { getFirestore, collection, getDocs, onSnapshot, addDoc, deleteDoc, doc, 
 import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "firebase/storage";
 import { createUserWithEmailAndPassword, getAuth, signOut, signInWithEmailAndPassword, onAuthStateChanged, updateProfile } from "firebase/auth";
 import state from './store/index';
-import { ChangePassword, DeleteTopicNotification, Notify, UpdateUserDisplayName, createTopicNotification } from "./hooks/AxiosHandler";
+import { ChangePassword, Notify, UpdateUserDisplayName } from "./hooks/AxiosHandler";
 import { formatForm } from "./hooks/Functions";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -109,13 +109,14 @@ export async function addDocuments(data, setLoading, event, file) {
       await uploadBytes(storageReference, file);
       const downloadURL = await getDownloadURL(storageReference);
 
-      // Adicionar dados ao Firestore
+      // // Adicionar dados ao Firestore
       const newData = { ...data, Edital: downloadURL, CreatedAT: serverTimestamp() };
       const docRef = await addDoc(collection(getFirestore(), 'Solicitações'), newData);
 
       console.log("Documento adicionado com ID:", docRef.id, "e dados:", newData);
       state.message = "Licitação adicionada com sucesso!";
       event.target.reset();
+      console.log(newData)
       Notify(data.Title, data.Category)
     }
   } catch (error) {
@@ -214,7 +215,6 @@ export async function addCategory(data, setLoading, event) {
 
     // Adicionar o categoria ao Firestore
     const docRef = await addDoc(categoryRef, categoryObject);
-    createTopicNotification(categoryObject.name)
     console.log("Categoria adicionada com ID:", docRef.id);
     event.target.reset()
     state.message = "Categoria adicionada com sucesso!"
@@ -244,7 +244,6 @@ export function deleteCategory(id, onClose, name) {
   const docRef = doc(dataBase, 'Categorias', id)
   deleteDoc(docRef)
     .then(() => {
-      DeleteTopicNotification(name)
       onClose()
       state.message = "Categoria excluida com sucesso!"
     })
@@ -264,12 +263,12 @@ export function deleteDocuments(e, onClose) {
             licit.push({ ...doc.data(), id: doc.id })
           })
           onClose()
+          state.message = "Licitação deletada com sucesso!"
         })
         .catch(err => {
           console.log(err.message)
         })
     })
-  state.message = "Licitação deletada com sucesso!"
 }
 
 // Update Documents 

@@ -1,8 +1,6 @@
 import axios from "axios";
 import state from "../store";
-import moment from "moment";
 const url = "https://solicitaserv.onrender.com/"
-const notifyUrl = 'https://app.nativenotify.com/api/notification'
 
 export const ChangePassword = async (user, password) => {
     const userId = user; // Substitua pelo UID real do usuário
