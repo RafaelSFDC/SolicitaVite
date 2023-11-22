@@ -141,6 +141,8 @@ const CriarLicitação = () => {
                         <input type="hidden" name="idSelecionado" value={idSelecionado} />
                         {/* Campo oculto para armazenar o ID selecionado */}
                         <input type="hidden" name="CategoryId" value={cartegoryId} />
+                        {/* Campo oculto para armazenar o ID selecionado */}
+                        <input type="hidden" name="recusas" value={{}} />
                         {loading ?
                             <button style={{ background: "transparent", border: "none" }}>
                                 <Spinner />
