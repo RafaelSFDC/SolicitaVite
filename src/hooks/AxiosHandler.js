@@ -59,15 +59,25 @@ export const Notify = (title) => {
     // Gerar a data atual no formato desejado
     const dateSent = moment().format('MM-DD-YYYY h:mmA');
 
+    // const data = {
+    //     "appId": 14884,
+    //     "appToken": "8eIowtFYCkhSh8eaXJDsqv",
+    //     "title": "Nova Licitação Adicionada!",
+    //     "body": title,
+    //     "dateSent": dateSent
+    // };
+
     const data = {
         "appId": 14884,
         "appToken": "8eIowtFYCkhSh8eaXJDsqv",
-        "title": "Nova Licitação Adicionada!",
-        "body": title,
-        "dateSent": dateSent
-    };
+        "bigPictureURL": "",
+        "masterSubID": "Produtos",
+        "message": title,
+        "pushData": "",
+        "title": "Nova Licitação Adicionada!"
+    }
 
-    axios.post(notifyUrl, data, {
+    axios.post("https://app.nativenotify.com/api/follow/notification", data, {
         headers: {
             'Content-Type': 'application/json'
         }
@@ -79,3 +89,29 @@ export const Notify = (title) => {
             console.error('Erro ao enviar a solicitação:', error);
         });
 }
+
+
+export const createTopicNotification = (data) => {
+    const body = {
+        "appId": 14884,
+        "appToken": "8eIowtFYCkhSh8eaXJDsqv",
+        "isTopicGroup": true,
+        "masterSubID": data
+    }
+    axios.post("https://app.nativenotify.com/api/post/follow/master", body, {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+}
+export const DeleteTopicNotification = (data) => {
+    console.log(data);
+    axios.delete(`https://app.nativenotify.com/api/follow/master/14884/8eIowtFYCkhSh8eaXJDsqv/${data}`)
+        .then(response => {
+            console.log('Exclusão bem-sucedida:', response);
+        })
+        .catch(error => {
+            console.error('Erro ao excluir notificação:', error);
+        });
+}
+

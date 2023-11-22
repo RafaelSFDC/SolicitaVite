@@ -4,7 +4,7 @@ import { getFirestore, collection, getDocs, onSnapshot, addDoc, deleteDoc, doc, 
 import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "firebase/storage";
 import { createUserWithEmailAndPassword, getAuth, signOut, signInWithEmailAndPassword, onAuthStateChanged, updateProfile } from "firebase/auth";
 import state from './store/index';
-import { ChangePassword, Notify, UpdateUserDisplayName } from "./hooks/AxiosHandler";
+import { ChangePassword, DeleteTopicNotification, Notify, UpdateUserDisplayName, createTopicNotification } from "./hooks/AxiosHandler";
 import { formatForm } from "./hooks/Functions";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -214,6 +214,7 @@ export async function addCategory(data, setLoading, event) {
 
     // Adicionar o categoria ao Firestore
     const docRef = await addDoc(categoryRef, categoryObject);
+    createTopicNotification(categoryObject.name)
     console.log("Categoria adicionada com ID:", docRef.id);
     event.target.reset()
     state.message = "Categoria adicionada com sucesso!"
@@ -239,10 +240,11 @@ export async function editCategory(event, id, setLoading, conclusion) {
   state.message = "Categoria atualizada com sucesso!"
 }
 
-export function deleteCategory(id, onClose) {
+export function deleteCategory(id, onClose, name) {
   const docRef = doc(dataBase, 'Categorias', id)
   deleteDoc(docRef)
     .then(() => {
+      DeleteTopicNotification(name)
       onClose()
       state.message = "Categoria excluida com sucesso!"
     })

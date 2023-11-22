@@ -38,7 +38,7 @@ const CategoriaModal = ({ isOpen, type, value, onClose }) => {
                                         <h3>Tem certeza que deseja excluir essa Categoria?</h3>
                                         <h3>{info.name}</h3>
                                         <div className="buttonContainer center">
-                                            <button onClick={() => { deleteCategory(id, onClose, setLoading) }} className="delete">
+                                            <button onClick={() => { deleteCategory(id, onClose, info.name) }} className="delete">
                                                 <AiFillDelete /> Excluir
                                             </button>
                                         </div>
