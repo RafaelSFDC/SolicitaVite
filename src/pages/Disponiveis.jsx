@@ -68,7 +68,8 @@ const Disponiveis = () => {
                                         <span>Titulo: </span>
                                         <p>{result.Title}</p>
                                     </div>
-                                    <div><span>Empresa Solicitante: </span><p>{result.Name}</p></div>
+                                    <div><span>Empresa Solicitante: </span><p>{result.ClientName}</p></div>
+                                    <div><span>Categoria: </span><p>{result.Category}</p></div>
                                     <div><span>Descrição: </span><p>{result.Desc ? result.Desc : "Nenhuma"}</p></div>
                                     <div>
                                         <span>Data de Limite de entrega: </span>

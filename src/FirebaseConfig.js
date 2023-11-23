@@ -108,12 +108,11 @@ export async function addDocuments(data, setLoading, event, file) {
       // // Adicionar dados ao Firestore
       const newData = { ...data, Edital: downloadURL, CreatedAT: serverTimestamp() };
       const docRef = await addDoc(collection(getFirestore(), 'Solicitações'), newData);
-
+      await Notify(data.Title, data.Category)
       console.log("Documento adicionado com ID:", docRef.id, "e dados:", newData);
       state.message = "Licitação adicionada com sucesso!";
       event.target.reset();
       console.log(newData)
-      Notify(data.Title, data.Category)
     }
   } catch (error) {
     console.error("Erro ao adicionar o documento:", error);
@@ -152,17 +151,11 @@ export async function editDocuments(data, setLoading, event, file) {
 
 // -------------- CLIENTES --------------
 export async function addClients(clientData, setLoading, event) {
-  event.preventDefault();
+
   setLoading(true)
   try {
-    // Converter FormData em um objeto JavaScript
-    const clientObject = {};
-    clientData.forEach((value, key) => {
-      clientObject[key] = value;
-    });
-
     // Adicionar o cliente ao Firestore
-    const docRef = await addDoc(clientRef, clientObject);
+    const docRef = await addDoc(clientRef, clientData);
     console.log("Cliente adicionado com ID:", docRef.id);
     event.target.reset()
     state.message = "Empresa adicionada com sucesso!"
@@ -269,13 +262,9 @@ export function deleteDocuments(e, onClose) {
 
 // Update Documents 
 export function updateDocument(e, id, conclusion) {
-  e.preventDefault()
+  const data = formatForm(e, "client")
   const docRef = doc(dataBase, 'Solicitações', id)
   const formData = new FormData(e.target);
-  const data = {};
-  formData.forEach((value, key) => {
-    data[key] = value;
-  });
   updateDoc(docRef, data)
   conclusion()
   state.message = "Licitação atualizada com sucesso!"

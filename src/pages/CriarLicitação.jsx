@@ -9,31 +9,6 @@ import { addDocuments } from "../FirebaseConfig";
 const CriarLicitação = () => {
     const [loading, setLoading] = useState(false)
     const [edital, setEdital] = useState('Nenhum arquivo selecionado');
-    // Estado para armazenar o ID selecionado
-    const [idSelecionado, setIdSelecionado] = useState('');
-    const [category, setCategory] = useState('');
-    const [cartegoryId, setCartegoryId] = useState('');
-
-    // Função para lidar com a alteração no select
-    const handleSelectChange = (event) => {
-        // Obtém a opção selecionada
-        const opcaoSelecionada = event.target.options[event.target.selectedIndex];
-
-        // Obtém o ID, category e categoryId diretamente da opção selecionada
-        const novoIdSelecionado = opcaoSelecionada.id;
-        const categorySelecionada = opcaoSelecionada.getAttribute('data-category');
-        const categoryIdSelecionada = opcaoSelecionada.getAttribute('data-categoryId');
-
-        // Atualiza o estado com as novas informações
-        setIdSelecionado(novoIdSelecionado);
-        setCategory(categorySelecionada);
-        setCartegoryId(categoryIdSelecionada);
-
-        // Se desejar, você pode imprimir as informações no console para verificar
-        console.log('ID selecionado:', novoIdSelecionado);
-        console.log('Category selecionada:', categorySelecionada);
-        console.log('CategoryId selecionada:', categoryIdSelecionada);
-    };
 
     useEffect(() => {
         determineActivePage()
@@ -53,20 +28,7 @@ const CriarLicitação = () => {
             return;
         }
 
-        // Extrair valores de Client e adicionar ao objeto form
-        if (form.Client) {
-            const [clientName, category, categoryId, id] = form.Client.split(',');
-            form.ClientName = clientName;
-            form.Category = category;
-            form.CategoryId = categoryId;
-            form.ClientId = id;
-
-            // Remover a propriedade Client original se necessário
-            delete form.Client;
-            delete form.Edital
-            form.recusas = {}
-            setEdital("Nenhum Arquivo Selecionado")
-        }
+        setEdital("Nenhum Arquivo Selecionado")
         console.log(form)
         addDocuments(form, setLoading, event, file);
     };
@@ -106,7 +68,7 @@ const CriarLicitação = () => {
                         </div>
                         <div className="form-field">
                             <p>Empresa Solicitante</p>
-                            <SelectClient onChange={handleSelectChange} />
+                            <SelectClient />
                         </div>
                         <div className="form-field">
                             <p>Observações(Opcional)</p>
@@ -130,13 +92,6 @@ const CriarLicitação = () => {
                                 </label>
                             </div>
                         </div>
-                        {/* Campo oculto para armazenar o ID selecionado */}
-                        <input type="hidden" name="idSelecionado" value={idSelecionado} />
-                        {/* Campo oculto para armazenar o ID selecionado */}
-                        <input type="hidden" name="Category" value={category} />
-                        {/* Campo oculto para armazenar o ID selecionado */}
-                        <input type="hidden" name="CategoryId" value={cartegoryId} />
-                        {/* Campo oculto para armazenar o ID selecionado */}
                         <input type="hidden" name="recusas" value={{}} />
                         {loading ?
                             <button style={{ background: "transparent", border: "none" }}>

@@ -16,5 +16,17 @@ export const formatForm = (event) => {
     formData.forEach((value, key) => {
         data[key] = value;
     });
+    // Extrair valores de Client e adicionar ao objeto form
+    if (data.Client) {
+        const [clientName, category, categoryId, id] = data.Client.split(',');
+        data.ClientName = clientName;
+        data.Category = category;
+        data.CategoryId = categoryId;
+        data.ClientId = id;
+
+        // Remover a propriedade Client original se necessário
+        delete data.Client;
+        data.recusas = {}
+    }
     return data;
 };

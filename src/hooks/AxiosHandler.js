@@ -58,6 +58,7 @@ export const Notify = async (title, category) => {
         mensagem: title,
         category: category,
     }
+    console.log("O QUE CHEGA NO NOTIFY:", body)
     try {
         await axios.post(`${url}enviar-notificacoes`, body);
         console.log('Notificação enviada com sucesso!');

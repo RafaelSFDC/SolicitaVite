@@ -40,7 +40,7 @@ const LicitationInfoModal = ({ isOpen, type, value, onClose, }) => {
                                 <textarea rows={1} name="Title" type="text" required defaultValue={info.Title} />
                             </div>
                             <div className="form-field">
-                                <p>Nome do Solicitante:</p>
+                                <p>Nome da Empresa:</p>
                                 <SelectClient defaultValue={info.ClientName} />
                             </div>
                             <div className="form-field">
@@ -91,8 +91,12 @@ const LicitationInfoModal = ({ isOpen, type, value, onClose, }) => {
                                 <p>{info.Title}</p>
                             </div>
                             <div>
-                                <span>Nome do Solicitante: </span>
+                                <span>Nome da Empresa: </span>
                                 <p>{info.ClientName}</p>
+                            </div>
+                            <div>
+                                <span>Categoria: </span>
+                                <p>{info.Category}</p>
                             </div>
                             <div>
                                 <span>Observações: </span>

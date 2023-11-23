@@ -47,7 +47,7 @@ const ClientesModal = ({ isOpen, type, value, onClose }) => {
                             </div>
                             <div className="form-field">
                                 <p>Categoria:</p>
-                                <SelectCategory defaultValue={info.Name} required={false} />
+                                <SelectCategory defaultValue={info.Category} required={false} />
                             </div>
                             {/* Campo oculto para armazenar o ID selecionado */}
                             <input type="hidden" name="CategoryId" value={cartegoryId} />
@@ -100,7 +100,7 @@ const ClientesModal = ({ isOpen, type, value, onClose }) => {
                             </div>
                             <div>
                                 <span>Categoria: </span>
-                                <p>{info.Name ? info.Name : "Nenhum Categoria Cadastrada"}</p>
+                                <p>{info.Category ? info.Category : "Nenhum Categoria Cadastrada"}</p>
                             </div>
                         </div>
                     )}

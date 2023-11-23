@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import { ColorRing } from 'react-loader-spinner'
 import { addClients } from "../FirebaseConfig";
-import determineActivePage from "../hooks/Functions";
+import determineActivePage, { formatForm } from "../hooks/Functions";
 import InputMask from 'react-input-mask';
 import SelectCategory from "../components/SelectCategory";
 import ContainerMotion from "../components/ContainerMotion";
@@ -12,8 +12,8 @@ const CriarClientes = () => {
     const [cartegoryId, setCartegoryId] = useState('');
 
     const formHandler = (event) => {
-        const formData = new FormData(event.target);
-        addClients(formData, setLoading, event);
+        const form = formatForm(event)
+        addClients(form, setLoading, event);
     };
 
     const handleCategory = (event) => {
