@@ -91,28 +91,29 @@ onSnapshot(categoryQuery, (snap) => {
   });
 });
 
-export async function addDocuments(data, setLoading, event, file) {
+export async function uploadFile(file) {
+  // Referência para o armazenamento
+  const storage = getStorage();
+  const storageReference = storageRef(storage, `files/${file.name}`);
+
+  // Upload do arquivo para o armazenamento
+  await uploadBytes(storageReference, file);
+  const downloadURL = await getDownloadURL(storageReference);
+  return downloadURL
+}
+
+export async function addDocuments(data, setLoading, event) {
   try {
     const auth = getAuth();
     const user = auth.currentUser;
 
     if (user) {
-      // Referência para o armazenamento
-      const storage = getStorage();
-      const storageReference = storageRef(storage, `files/${file.name}`);
-
-      // Upload do arquivo para o armazenamento
-      await uploadBytes(storageReference, file);
-      const downloadURL = await getDownloadURL(storageReference);
-
-      // // Adicionar dados ao Firestore
-      const newData = { ...data, Edital: downloadURL, CreatedAT: serverTimestamp() };
-      const docRef = await addDoc(collection(getFirestore(), 'Solicitações'), newData);
+      const docRef = await addDoc(collection(getFirestore(), 'Solicitações'), data);
       await Notify(data.Title, data.Category)
-      console.log("Documento adicionado com ID:", docRef.id, "e dados:", newData);
+      console.log("Documento adicionado com ID:", docRef.id, "e dados:", data);
       state.message = "Licitação adicionada com sucesso!";
       event.target.reset();
-      console.log(newData)
+      console.log(data)
     }
   } catch (error) {
     console.error("Erro ao adicionar o documento:", error);
@@ -151,7 +152,7 @@ export async function editDocuments(data, setLoading, event, file) {
 
 // -------------- CLIENTES --------------
 export async function addClients(clientData, setLoading, event) {
-
+  console.log("cliente data que foi enviado: ", clientData)
   setLoading(true)
   try {
     // Adicionar o cliente ao Firestore
@@ -264,7 +265,6 @@ export function deleteDocuments(e, onClose) {
 export function updateDocument(e, id, conclusion) {
   const data = formatForm(e, "client")
   const docRef = doc(dataBase, 'Solicitações', id)
-  const formData = new FormData(e.target);
   updateDoc(docRef, data)
   conclusion()
   state.message = "Licitação atualizada com sucesso!"
@@ -273,11 +273,11 @@ export function updateDocument(e, id, conclusion) {
 
 // Create a User
 export async function createUserFirebase(event, setLoading) {
-  const form = formatForm(event);
+  const form = await formatForm(event);
   setLoading(true);
   event.target.reset();
 
-  const { email, password, userName, permission, Name, CategoryId } = form;
+  const { email, password, userName, permission, Category, CategoryId } = form;
   const auth = getAuth();
 
   try {
@@ -290,7 +290,7 @@ export async function createUserFirebase(event, setLoading) {
     const userObject = {
       permission,
       CreatedAT: serverTimestamp(),
-      category: Name || "",
+      category: Category || "",
       categoryId: CategoryId || "",
     };
 

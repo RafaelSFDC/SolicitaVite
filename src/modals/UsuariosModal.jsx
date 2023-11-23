@@ -109,6 +109,13 @@ const UsuariosModal = ({ isOpen, type, value, onClose, setReload, userInfo }) =>
                                 <span>Data de criação: </span>
                                 <p>{convertDate(data.data)}</p>
                             </div>
+                            {userType === "Usuario" ?
+                                <div>
+                                    <span>Categoria: </span>
+                                    <p>{data.category}</p>
+                                </div>
+                                : null
+                            }
                             <div>
                                 <span>Email: </span>
                                 <p>{user.email}</p>

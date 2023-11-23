@@ -11,8 +11,8 @@ const CriarClientes = () => {
     const [loading, setLoading] = useState(false)
     const [cartegoryId, setCartegoryId] = useState('');
 
-    const formHandler = (event) => {
-        const form = formatForm(event)
+    const formHandler = async (event) => {
+        const form = await formatForm(event)
         addClients(form, setLoading, event);
     };
 

@@ -1,3 +1,4 @@
+import { uploadFile } from "../FirebaseConfig";
 import state from "../store";
 
 const determineActivePage = () => {
@@ -9,13 +10,23 @@ const determineActivePage = () => {
 
 export default determineActivePage;
 
-export const formatForm = (event) => {
+export const formatForm = async (event) => {
     event.preventDefault();
     const formData = new FormData(event.target);
     const data = {};
     formData.forEach((value, key) => {
         data[key] = value;
     });
+    const updateEdital = async () => {
+        if (data.Edital) {
+            const file = await uploadFile(data.Edital)
+            console.log(file)
+            data["Edital"] = file
+        }
+    }
+    if (data.Edital) {
+        await updateEdital()
+    }
     // Extrair valores de Client e adicionar ao objeto form
     if (data.Client) {
         const [clientName, category, categoryId, id] = data.Client.split(',');
@@ -28,5 +39,6 @@ export const formatForm = (event) => {
         delete data.Client;
         data.recusas = {}
     }
+    console.log("RESULTADO DA FUNÇÃO FORMAT FORM:", data)
     return data;
 };

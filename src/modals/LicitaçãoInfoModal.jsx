@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { AiFillCloseSquare, AiFillDelete, } from 'react-icons/ai';
-import { FaDownload } from "react-icons/fa";
+import { FaDownload, FaFilePdf } from "react-icons/fa";
 import { deleteDocuments, updateDocument } from '../FirebaseConfig';
 import { Link } from 'react-router-dom';
 import SelectClient from '../components/SelectClient';
@@ -8,6 +8,7 @@ import Spinner from '../components/Spinner';
 import ModalMotion from './ModalMotion';
 const LicitationInfoModal = ({ isOpen, type, value, onClose, }) => {
     const [loading, setLoading] = useState(false);
+    const [edital, setEdital] = useState('Nenhum arquivo selecionado');
     const data = value || { result: "", id: "" }
     const info = data.result
     const id = data.id
@@ -21,6 +22,26 @@ const LicitationInfoModal = ({ isOpen, type, value, onClose, }) => {
         const date = new Date(milliseconds);
         return date.toLocaleString(); // Você pode ajustar o formato conforme necessário
     }
+
+
+    const handleFileChange = (event) => {
+        const arquivoSelecionado = event.target.files[0];
+
+        if (arquivoSelecionado) {
+            const extensoesPermitidas = ['pdf', 'doc', 'docx'];
+            const extensao = arquivoSelecionado.name.split('.').pop().toLowerCase();
+
+            if (extensoesPermitidas.includes(extensao)) {
+                setEdital(arquivoSelecionado.name);
+            } else {
+                alert('Por favor, selecione um arquivo PDF ou do Word.');
+                event.target.value = null;  // Limpa a seleção do arquivo
+                setEdital('Nenhum arquivo selecionado');
+            }
+        } else {
+            setEdital('Nenhum arquivo selecionado');
+        }
+    };
 
     return (
         value ? (
@@ -45,15 +66,25 @@ const LicitationInfoModal = ({ isOpen, type, value, onClose, }) => {
                             </div>
                             <div className="form-field">
                                 <p>Descrição da Solicitação:</p>
-                                <textarea rows={1} name="Desc" type="text" required defaultValue={info.Desc} />
+                                <textarea rows={1} name="Desc" type="text" defaultValue={info.Desc} />
                             </div>
                             <div className="form-field">
                                 <p>Observações:</p>
-                                <textarea rows={1} name="observ" type="text" required defaultValue={info.observ} />
+                                <textarea rows={1} name="observ" type="text" defaultValue={info.observ} />
                             </div>
                             <div className="form-field">
                                 <p>Data de entrega:</p>
                                 <input className='date' type="date" name="Date" id="" required defaultValue={info.Date} />
+                            </div>
+                            <div className="form-field">
+                                <p>Edital</p>
+                                <div className="customInput">
+                                    <label htmlFor="Edital">
+                                        <span><FaFilePdf /> Selecione o Edital</span>
+                                        <p>Arquivo selecionado: {edital}</p>
+                                        <input type="file" name="Edital" id="Edital" accept=".pdf, .doc, .docx" onChange={handleFileChange} />
+                                    </label>
+                                </div>
                             </div>
                             <button className="send-button" type="submit">Atualizar</button>
                         </form>

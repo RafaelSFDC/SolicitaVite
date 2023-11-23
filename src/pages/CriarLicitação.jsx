@@ -16,9 +16,9 @@ const CriarLicitação = () => {
 
 
 
-    const formHandler = (event) => {
-        const form = formatForm(event)
+    const formHandler = async (event) => {
         setLoading(true);
+        const form = await formatForm(event)
         const file = form.Edital
 
         // Verifique se o arquivo foi selecionado
@@ -30,7 +30,7 @@ const CriarLicitação = () => {
 
         setEdital("Nenhum Arquivo Selecionado")
         console.log(form)
-        addDocuments(form, setLoading, event, file);
+        addDocuments(form, setLoading, event);
     };
 
 
