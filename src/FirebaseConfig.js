@@ -367,11 +367,17 @@ export function editUser(e, userId, setLoading, close) {
   formData.forEach((value, key) => {
     data[key] = value;
   });
-  if (data.password) {
+  console.log(data)
+  if (data.password.length > 6) {
     ChangePassword(userId, data.password,)
   }
+  if (data.permission !== "Usuario") {
+    data.Category = ""
+    data.CategoryId = ""
+  }
   UpdateUserDisplayName(userId, data.user, setLoading)
-  updateDoc(docRef, { permission: data.permission, category: data.category, categoryId: data.categoryId, })
+  delete data.password;
+  updateDoc(docRef, data)
   close()
 }
 

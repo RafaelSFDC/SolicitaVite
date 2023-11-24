@@ -67,7 +67,8 @@ const UsuariosModal = ({ isOpen, type, value, onClose, setReload, userInfo }) =>
                             {userType === "Usuario" ?
                                 <div className="form-field">
                                     <p>Categoria</p>
-                                    <SelectCategory defaultValue={data.category} onChange={handleCategory} />
+                                    {console.log("DADOS DO USER:", data)}
+                                    <SelectCategory defaultValue={data.category} onChange={handleCategory} required={true} />
                                 </div>
                                 : null
                             }
