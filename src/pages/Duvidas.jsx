@@ -9,7 +9,7 @@ import ContainerMotion from "../components/ContainerMotion";
 
 const Duvidas = () => {
     const snap = useSnapshot(state);
-    const questions = snap.questions
+    const questions = snap.Questions
     const tasksValue = JSON.parse(JSON.stringify(questions))
     console.log("VALOR", tasksValue)
 

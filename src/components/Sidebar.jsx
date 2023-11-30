@@ -4,6 +4,7 @@ import { TbCategory, TbCategoryPlus } from "react-icons/tb";
 import state from "../store";
 import { Link } from "react-router-dom";
 import { useSnapshot } from "valtio";
+import { FaClipboardQuestion } from "react-icons/fa6";
 
 const Sidebar = () => {
     useSnapshot(state)
@@ -22,18 +23,21 @@ const Sidebar = () => {
                     <p>Criar Licitação</p>
                 </Link>
             </div>
-            <div>
-                <Link to="/users" className={state.activePage === "/users" ? "sidebarLinks active" : "sidebarLinks"}>
-                    <PiUsersBold />
-                    <p>Usuários</p>
-                </Link>
-            </div>
-            <div>
-                <Link to="/createUsers" className={state.activePage === "/createUsers" ? "sidebarLinks active" : "sidebarLinks"}>
-                    <PiUserCirclePlusBold />
-                    <p>Adicionar Usuários</p>
-                </Link>
-            </div>
+            {state.permission === "Admin" ?
+                <>
+                    <div>
+                        <Link to="/users" className={state.activePage === "/users" ? "sidebarLinks active" : "sidebarLinks"}>
+                            <PiUsersBold />
+                            <p>Usuários</p>
+                        </Link>
+                    </div>
+                    <div>
+                        <Link to="/createUsers" className={state.activePage === "/createUsers" ? "sidebarLinks active" : "sidebarLinks"}>
+                            <PiUserCirclePlusBold />
+                            <p>Adicionar Usuários</p>
+                        </Link>
+                    </div>
+                </> : null}
             <div>
                 <Link to="/clients" className={state.activePage === "/clients" ? "sidebarLinks active" : "sidebarLinks"}>
                     <BsBuildingFill />
@@ -60,7 +64,7 @@ const Sidebar = () => {
             </div>
             <div>
                 <Link to="/questions" className={state.activePage === "/questions" ? "sidebarLinks active" : "sidebarLinks"}>
-                    <TbCategoryPlus />
+                    <FaClipboardQuestion />
                     <p>Duvidas</p>
                 </Link>
             </div>

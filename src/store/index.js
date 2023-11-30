@@ -16,7 +16,10 @@ const state = proxy({
     modalDelete: false,
     modalResult: false,
     Clients: [],
-    message: ""
+    Questions: [],
+    message: "",
+    permission: "",
+    activePage: "/",
 });
 
 export default state;

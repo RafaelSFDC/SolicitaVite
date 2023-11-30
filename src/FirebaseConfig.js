@@ -18,44 +18,32 @@ const firebaseConfig = {
   messagingSenderId: "737658132352",
   appId: "1:737658132352:web:d869d0309d44e800b19365"
 };
-
-
-// Initialize Firebase
+// ==========================================
+// ====== Initialize Firebase
+// ==========================================
 export const FIREBASE_APP = initializeApp(firebaseConfig);
 export const FIREBASE_AUTH = getAuth(FIREBASE_APP);
-
-
-// Database
 const dataBase = getFirestore()
 const storage = getStorage();
 
-// Collection ref
+// ==========================================
+// ====== Collection ref
+// ==========================================
 export const collRef = collection(dataBase, 'Solicitações')
 export const userRef = collection(dataBase, 'Usuários')
 export const clientRef = collection(dataBase, 'Clientes')
 export const categoryRef = collection(dataBase, 'Categorias')
-
-// Collection of Data
-getDocs(collRef)
-  .then((snap) => {
-    let licit = []
-
-    snap.docs.forEach((doc) => {
-      licit.push({ ...doc.data(), id: doc.id })
-    })
-
-  })
-  .catch(err => {
-    console.log(err.message)
-  })
-
-
-// Queries
+export const questionsRef = collection(dataBase, 'Dúvidas')
+// ==========================================
+// ====== Queries
+// ==========================================
 const q = query(collRef, orderBy("ListName", "asc"))
 const clientsQuery = query(clientRef, orderBy("clientName", "asc"));
 const categoryQuery = query(categoryRef, orderBy("name", "asc"));
-
-// Real Time collection of Data
+// const questionsQuery = query(questionsRef, orderBy("createdAT", "asc"));
+// ==========================================
+// ====== GET DATA
+// ==========================================
 onSnapshot(q, (snap) => {
   state.aveliableTasks = []
 
@@ -67,7 +55,6 @@ onSnapshot(q, (snap) => {
     state.aveliableTasks.push(final)
   })
 })
-
 onSnapshot(clientsQuery, (snap) => {
   state.Clients = [];
 
@@ -78,7 +65,6 @@ onSnapshot(clientsQuery, (snap) => {
     state.Clients.push(final);
   })
 });
-
 onSnapshot(categoryQuery, (snap) => {
   state.Category = [];
 
@@ -90,7 +76,20 @@ onSnapshot(categoryQuery, (snap) => {
     state.Category.push(final);
   });
 });
+onSnapshot(questionsRef, (snap) => {
+  state.Questions = [];
 
+  snap.docs.forEach((doc) => {
+    const result = doc.data();
+    const id = doc.id;
+    const final = { result, id };
+    console.log("Questions: ", final);
+    state.Category.push(final);
+  });
+});
+// ==========================================
+// ====== Functions
+// ==========================================
 export async function uploadFile(file) {
   // Referência para o armazenamento
   const storage = getStorage();
@@ -101,7 +100,59 @@ export async function uploadFile(file) {
   const downloadURL = await getDownloadURL(storageReference);
   return downloadURL
 }
+export async function verifyUser(user) {
+  const userReference = doc(dataBase, 'Usuários', user.uid);
+  console.log("VERIFYING USER");
 
+  const docSnapshot = await getDoc(userReference);
+
+  if (docSnapshot.exists()) {
+    const userData = docSnapshot.data();
+
+    if (userData && userData.permission === 'Usuario') {
+      state.logged = false;
+      logOut();
+      throw ("Usuário não tem permissão para acessar o painel.");
+    } else {
+      state.user = user;
+      state.logged = true;
+      state.permission = userData.permission
+    }
+
+    return true;
+  } else {
+    return false; // Usuário não encontrado
+  }
+}
+export function deleteDocuments(e, onClose) {
+  const docRef = doc(dataBase, 'Solicitações', e)
+  deleteDoc(docRef)
+    .then(() => {
+      getDocs(collRef)
+        .then((snap) => {
+          let licit = []
+
+          snap.docs.forEach((doc) => {
+            licit.push({ ...doc.data(), id: doc.id })
+          })
+          onClose()
+          state.message = "Licitação deletada com sucesso!"
+        })
+        .catch(err => {
+          console.log(err.message)
+        })
+    })
+}
+export function updateDocument(e, id, conclusion) {
+  const data = formatForm(e, "client")
+  const docRef = doc(dataBase, 'Solicitações', id)
+  updateDoc(docRef, data)
+  conclusion()
+  state.message = "Licitação atualizada com sucesso!"
+}
+// ==========================================
+// ====== ADD DATA
+// ==========================================
 export async function addDocuments(data, setLoading, event) {
   try {
     const auth = getAuth();
@@ -123,7 +174,9 @@ export async function addDocuments(data, setLoading, event) {
   }
 }
 
-
+// ==========================================
+// ====== EDIT DATA
+// ==========================================
 export async function editDocuments(data, setLoading, event, file) {
   try {
     const storageReference = storageRef(storage, `files/${file.name}`);
@@ -150,7 +203,9 @@ export async function editDocuments(data, setLoading, event, file) {
   }
 }
 
-// -------------- CLIENTES --------------
+// ==========================================
+// ====== CLIENT ACCTIONS
+// ==========================================
 export async function addClients(clientData, setLoading, event) {
   console.log("cliente data que foi enviado: ", clientData)
   setLoading(true)
@@ -167,7 +222,6 @@ export async function addClients(clientData, setLoading, event) {
     setLoading(false);
   }
 }
-
 export async function editClient(event, id, setLoading, conclusion) {
   event.preventDefault()
   setLoading(true)
@@ -182,7 +236,6 @@ export async function editClient(event, id, setLoading, conclusion) {
   conclusion()
   state.message = "Empresa atualizada com sucesso!"
 }
-
 export function deleteClients(id, onClose) {
   const docRef = doc(dataBase, 'Clientes', id)
   deleteDoc(docRef)
@@ -192,7 +245,9 @@ export function deleteClients(id, onClose) {
     })
     .catch(err => state.message = err.message)
 }
-// -------------- CATEGORIA ------------- //
+// ==========================================
+// ======  CATEGORY ACCTIONS
+// ==========================================
 export async function addCategory(data, setLoading, event) {
   event.preventDefault();
   setLoading(true)
@@ -229,7 +284,6 @@ export async function editCategory(event, id, setLoading, conclusion) {
   conclusion()
   state.message = "Categoria atualizada com sucesso!"
 }
-
 export function deleteCategory(id, onClose, name) {
   const docRef = doc(dataBase, 'Categorias', id)
   deleteDoc(docRef)
@@ -240,38 +294,9 @@ export function deleteCategory(id, onClose, name) {
     .catch(err => state.message = err.message)
 }
 
-// Deleting documents
-export function deleteDocuments(e, onClose) {
-  const docRef = doc(dataBase, 'Solicitações', e)
-  deleteDoc(docRef)
-    .then(() => {
-      getDocs(collRef)
-        .then((snap) => {
-          let licit = []
-
-          snap.docs.forEach((doc) => {
-            licit.push({ ...doc.data(), id: doc.id })
-          })
-          onClose()
-          state.message = "Licitação deletada com sucesso!"
-        })
-        .catch(err => {
-          console.log(err.message)
-        })
-    })
-}
-
-// Update Documents 
-export function updateDocument(e, id, conclusion) {
-  const data = formatForm(e, "client")
-  const docRef = doc(dataBase, 'Solicitações', id)
-  updateDoc(docRef, data)
-  conclusion()
-  state.message = "Licitação atualizada com sucesso!"
-}
-
-
-// Create a User
+// ==========================================
+// ======  AUTH ACCTIONS
+// ==========================================
 export async function createUserFirebase(event, setLoading) {
   const form = await formatForm(event);
   setLoading(true);
@@ -303,8 +328,6 @@ export async function createUserFirebase(event, setLoading) {
     console.log(error.message);
   }
 }
-
-// Login
 export async function LogUser(email, password) {
   return new Promise((resolve, reject) => {
     signInWithEmailAndPassword(FIREBASE_AUTH, email, password)
@@ -317,8 +340,6 @@ export async function LogUser(email, password) {
       })
   });
 }
-
-// Logout
 export function logOut() {
   signOut(FIREBASE_AUTH)
     .then(() => {
@@ -330,10 +351,9 @@ export function logOut() {
       console.error("Erro durante o logout: ", err.message);
     });
 }
-
-
-// --------------- Usuários --------------
-// Get the User
+// ==========================================
+// ======  USERS ACCTIONS
+// ==========================================
 export const getUser = (account, setInfo, setLoading, setModal) => {
   const userId = account.uid
   const userEmail = account.email
@@ -355,9 +375,6 @@ export const getUser = (account, setInfo, setLoading, setModal) => {
     .then(() => setModal(true))
     .catch(err => console.log(err))
 }
-
-
-// Update the User
 export function editUser(e, userId, setLoading, close) {
   e.preventDefault()
   const docRef = doc(dataBase, 'Usuários', userId)
@@ -379,27 +396,6 @@ export function editUser(e, userId, setLoading, close) {
   updateDoc(docRef, data)
   close()
 }
-
-export async function verifyUser(user) {
-  const userReference = doc(dataBase, 'Usuários', user.uid);
-  console.log("VERIFYING USER");
-
-  const docSnapshot = await getDoc(userReference);
-
-  if (docSnapshot.exists()) {
-    const userData = docSnapshot.data();
-
-    if (userData && userData.permission === 'Usuario') {
-      state.logged = false;
-      logOut();
-      throw ("Usuário não tem permissão para acessar o painel.");
-    } else {
-      state.user = user;
-      state.logged = true;
-    }
-
-    return true;
-  } else {
-    return false; // Usuário não encontrado
-  }
-}
+// ==========================================
+// ======  Question Actions
+// ==========================================
