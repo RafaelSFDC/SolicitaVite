@@ -60,6 +60,12 @@ const Sidebar = () => {
                     <p>Adicionar Categorias</p>
                 </Link>
             </div>
+            <div>
+                <Link to="/questions" className={state.activePage === "/addCategory" ? "sidebarLinks active" : "sidebarLinks"}>
+                    <TbCategoryPlus />
+                    <p>Adicionar Categorias</p>
+                </Link>
+            </div>
         </div>
     )
 };

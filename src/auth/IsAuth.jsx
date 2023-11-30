@@ -4,7 +4,7 @@ import { useSnapshot } from "valtio";
 import state from "../store";
 import { useEffect } from "react";
 import { onAuthStateChanged } from "firebase/auth";
-import { FIREBASE_AUTH } from "../FirebaseConfig";
+import { FIREBASE_AUTH, logOut, verifyUser } from "../FirebaseConfig";
 
 const IsAuth = () => {
     const auth = FIREBASE_AUTH; // Use a instância FIREBASE_AUTH
@@ -16,21 +16,20 @@ const IsAuth = () => {
         // Configura o ouvinte de autenticação
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             if (user) {
-                state.user = user;
-                state.logged = true
-                console.log("usuario: ", user)
+                verifyUser(user)
             } else {
+                console.log("failed")
                 state.user = null;
                 state.logged = false
             }
+            console.log("response OF AUTHSTATECHANGED", user)
         });
 
-        return () => {
 
+        return () => {
             unsubscribe(); // Certifique-se de cancelar a inscrição ao desmontar o componente
         }
     }, []);
-
     return (
         state.logged ? <Navigate to="/" state={{ from: location }} replace /> : <Outlet />
     )

@@ -1,7 +1,7 @@
 import { proxy } from "valtio";
 
 const state = proxy({
-    logged: "true",
+    logged: "false",
     component: "",
     lists: [],
     aveliableTasks: [],

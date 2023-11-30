@@ -67,7 +67,7 @@ const CriarLicitação = () => {
                             <textarea rows={1} type="text" name="Title" required />
                         </div>
                         <div className="form-field">
-                            <p>Empresa Solicitante</p>
+                            <p>Empresa Participante</p>
                             <SelectClient />
                         </div>
                         <div className="form-field">

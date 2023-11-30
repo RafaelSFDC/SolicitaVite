@@ -305,16 +305,15 @@ export async function createUserFirebase(event, setLoading) {
 }
 
 // Login
-export function LogUser(email, password, setLoading) {
+export async function LogUser(email, password) {
   return new Promise((resolve, reject) => {
     signInWithEmailAndPassword(FIREBASE_AUTH, email, password)
       .then((cred) => {
         resolve(cred); // Resolva a promessa com o valor de cred
-        GetUserOnLogin(cred)
       })
       .catch((err) => {
         console.log(err.message);
-        reject(err); // Rejeite a promessa com o erro
+        reject("Usuário não encontrado, tente novamente."); // Rejeite a promessa com o erro
       })
   });
 }
@@ -381,37 +380,26 @@ export function editUser(e, userId, setLoading, close) {
   close()
 }
 
-export function verifyUser(user) {
+export async function verifyUser(user) {
   const userReference = doc(dataBase, 'Usuários', user.uid);
-  return getDoc(userReference)
-    .then((docSnapshot) => {
-      if (docSnapshot.exists()) {
-        const userData = docSnapshot.data();
-        if (userData && userData.permission === 'Usuario') {
-          return false; // Usuário tem permissão "Usuario"
-        } else {
-          return false
-        }
-      } else {
-        return false; // Usuário não encontrado
-      }
-    })
-    .catch((error) => {
-      console.error("Erro ao verificar usuário:", error);
-      return false; // Tratamento de erro, retorne falso por padrão
-    });
+  console.log("VERIFYING USER");
+
+  const docSnapshot = await getDoc(userReference);
+
+  if (docSnapshot.exists()) {
+    const userData = docSnapshot.data();
+
+    if (userData && userData.permission === 'Usuario') {
+      state.logged = false;
+      logOut();
+      throw ("Usuário não tem permissão para acessar o painel.");
+    } else {
+      state.user = user;
+      state.logged = true;
+    }
+
+    return true;
+  } else {
+    return false; // Usuário não encontrado
+  }
 }
-
-
-export const GetUserOnLogin = (userId) => {
-  const userName = doc(dataBase, "Usuários", userId)
-  getDoc(userName)
-    .then((name) => {
-      const user = name.data().User
-      state.user = userName
-    })
-    .catch(err => console.log(err))
-}
-
-
-

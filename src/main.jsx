@@ -40,7 +40,6 @@ ReactDOM.createRoot(document.getElementById('root')).render(
               <Route path="/addCategory" element={<CriarCategoria />} />
             </Route>
           </Route>
-
         </Routes>
       </AuthProvider>
     </BrowserRouter>
