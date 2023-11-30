@@ -1,8 +1,6 @@
-import React from "react";
 import { PiListChecksBold, PiListPlusBold, PiUsersBold, PiUserCirclePlusBold } from "react-icons/pi";
 import { BsBuildingFill, BsBuildingFillAdd } from "react-icons/bs";
 import { TbCategory, TbCategoryPlus } from "react-icons/tb";
-import { motion } from "framer-motion";
 import state from "../store";
 import { Link } from "react-router-dom";
 import { useSnapshot } from "valtio";
@@ -61,9 +59,9 @@ const Sidebar = () => {
                 </Link>
             </div>
             <div>
-                <Link to="/questions" className={state.activePage === "/addCategory" ? "sidebarLinks active" : "sidebarLinks"}>
+                <Link to="/questions" className={state.activePage === "/questions" ? "sidebarLinks active" : "sidebarLinks"}>
                     <TbCategoryPlus />
-                    <p>Adicionar Categorias</p>
+                    <p>Duvidas</p>
                 </Link>
             </div>
         </div>

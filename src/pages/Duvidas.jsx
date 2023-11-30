@@ -4,14 +4,13 @@ import { AiFillDelete, AiFillInfoCircle, AiFillEdit } from "react-icons/ai";
 import { useSnapshot } from "valtio";
 import determineActivePage from "../hooks/Functions";
 import LicitationInfoModal from '../modals/LicitaçãoInfoModal';
-import { motion } from 'framer-motion';
 import ContainerMotion from "../components/ContainerMotion";
 
 
 const Duvidas = () => {
     const snap = useSnapshot(state);
-    const tasks = snap.aveliableTasks
-    const tasksValue = JSON.parse(JSON.stringify(tasks))
+    const questions = snap.questions
+    const tasksValue = JSON.parse(JSON.stringify(questions))
     console.log("VALOR", tasksValue)
 
     const [modal, setModal] = useState(false);
@@ -24,14 +23,6 @@ const Duvidas = () => {
             setInfo(tasksValue[index]);
         }
     };
-
-    const timeStamp = (time) => {
-        const timeformat = time.seconds
-        const dateFormat = new Date(timeformat * 1000)
-        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: "numeric", minute: "numeric", second: "numeric" };
-        const finalDate = dateFormat.toLocaleDateString(undefined, options)
-        return (finalDate)
-    }
     function formatDate(date) {
         const formattedDate = new Date(date);
         const day = String(formattedDate.getDate()).padStart(2, '0');
@@ -43,7 +34,7 @@ const Duvidas = () => {
     useEffect(() => {
         determineActivePage()
         setInfo(tasksValue[0])
-    }, [tasks]);
+    }, [tasksValue]);
 
 
     return <ContainerMotion className="container">
