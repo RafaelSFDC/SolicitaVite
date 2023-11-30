@@ -18,6 +18,7 @@ import RequireAuth from './auth/RequireAuth.jsx';
 import IsAuth from './auth/IsAuth.jsx';
 import Categoria from './pages/Categoria.jsx';
 import CriarCategoria from './pages/CriarCategoria.jsx';
+import Duvidas from './pages/Duvidas';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
@@ -38,6 +39,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
               <Route path="/addClients" element={<CriarClientes />} />
               <Route path="/category" element={<Categoria />} />
               <Route path="/addCategory" element={<CriarCategoria />} />
+              <Route path="/questions" element={<Duvidas />} />
             </Route>
           </Route>
         </Routes>

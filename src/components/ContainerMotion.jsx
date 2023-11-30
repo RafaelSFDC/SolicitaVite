@@ -6,7 +6,7 @@ const ContainerMotion = ({ children, className }) => {
             <motion.div
                 className={className ? className : "container"}
                 transition={{
-                    duration: 60,
+                    duration: 1,
                     ease: "easeInOut"
                 }}
                 initial={{ x: -150, opacity: 0 }}
