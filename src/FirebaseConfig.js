@@ -25,7 +25,6 @@ export const FIREBASE_APP = initializeApp(firebaseConfig);
 export const FIREBASE_AUTH = getAuth(FIREBASE_APP);
 const dataBase = getFirestore()
 const storage = getStorage();
-
 // ==========================================
 // ====== Collection ref
 // ==========================================
@@ -284,7 +283,7 @@ export async function editCategory(event, id, setLoading, conclusion) {
   conclusion()
   state.message = "Categoria atualizada com sucesso!"
 }
-export function deleteCategory(id, onClose, name) {
+export function deleteCategory(id, onClose) {
   const docRef = doc(dataBase, 'Categorias', id)
   deleteDoc(docRef)
     .then(() => {

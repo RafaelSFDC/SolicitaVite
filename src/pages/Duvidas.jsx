@@ -55,7 +55,7 @@ const Duvidas = () => {
         <div className="containerContent">
             <h1 className="contentHeader">Duvidas</h1>
             <div className="contentBody">
-                {<ul className="listContainer">
+                {questions?.length === 0 ? <p className="emptyList">Nenhuma duvida encontrada</p> : <ul className="listContainer">
                     {questions.map((item, index) => {
                         const id = item.id
                         const result = item.result
