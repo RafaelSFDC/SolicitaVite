@@ -5,13 +5,14 @@ import { useSnapshot } from "valtio";
 import determineActivePage from "../hooks/Functions";
 import LicitationInfoModal from '../modals/LicitaçãoInfoModal';
 import ContainerMotion from "../components/ContainerMotion";
+import DuvidasModal from "../modals/DuvidasModal";
 
 
 const Duvidas = () => {
     const snap = useSnapshot(state);
     const questions = snap.Questions
-    const tasksValue = JSON.parse(JSON.stringify(questions))
-    console.log("VALOR", tasksValue)
+
+    console.log("VALOR", questions)
 
     const [modal, setModal] = useState(false);
     const [info, setInfo] = useState("");
@@ -20,25 +21,32 @@ const Duvidas = () => {
     const modalToggle = (index) => {
         setModal(!modal)
         if (index !== null && index !== undefined) {
-            setInfo(tasksValue[index]);
+            setInfo(questions[index]);
         }
     };
-    function formatDate(date) {
-        const formattedDate = new Date(date);
-        const day = String(formattedDate.getDate()).padStart(2, '0');
-        const month = String(formattedDate.getMonth() + 1).padStart(2, '0'); // Mês é base 0
-        const year = formattedDate.getFullYear();
-        return `${day}/${month}/${year}`;
+    function formatDate(CreatedAT) {
+        const { seconds, nanoseconds } = CreatedAT;
+
+        // Converter para milissegundos
+        const timestamp = seconds * 1000 + Math.floor(nanoseconds / 1e6);
+
+        // Criar um objeto de data
+        const data = new Date(timestamp);
+
+        // Formatar a data para o formato desejado (DD/MM/YYYY HH:mm:ss)
+        const dataFormatada = `${data.toLocaleDateString('pt-BR')} ${data.toLocaleTimeString('pt-BR')}`;
+
+        return dataFormatada;
     }
 
     useEffect(() => {
         determineActivePage()
-        setInfo(tasksValue[0])
-    }, [tasksValue]);
+        setInfo(questions[0])
+    }, [questions]);
 
 
     return <ContainerMotion className="container">
-        <LicitationInfoModal
+        <DuvidasModal
             isOpen={modal}
             type={type}
             value={info}
@@ -48,28 +56,25 @@ const Duvidas = () => {
             <h1 className="contentHeader">Duvidas</h1>
             <div className="contentBody">
                 {<ul className="listContainer">
-                    {tasksValue.map((item, index) => {
+                    {questions.map((item, index) => {
                         const id = item.id
                         const result = item.result
                         return (
                             <li key={id} className="list-container">
-                                <h2>{result.ListName ? result.ListName : "Nome da lista não encontrado"}</h2>
+                                <h2>{result.Licit ? result.Licit : "Nome da lista não encontrado"}</h2>
                                 <div className="licit-container">
                                     <div>
-                                        <span>Titulo: </span>
-                                        <p>{result.Title}</p>
+                                        <span>Usuario: </span>
+                                        <p>{result.User}</p>
                                     </div>
-                                    <div><span>Empresa Solicitante: </span><p>{result.ClientName}</p></div>
-                                    <div><span>Categoria: </span><p>{result.Category}</p></div>
-                                    <div><span>Descrição: </span><p>{result.Desc ? result.Desc : "Nenhuma"}</p></div>
                                     <div>
-                                        <span>Data de Limite de entrega: </span>
-                                        <p>{formatDate(result.Date)}</p>
+                                        <span>Data de envio: </span>
+                                        <p>{formatDate(result.CreatedAT)}</p>
                                     </div>
                                 </div>
                                 <div className="buttonContainer">
                                     <button className="edit" onClick={() => { modalToggle(index); setType("Edit") }} >
-                                        <AiFillEdit /> <p>Editar</p>
+                                        <AiFillEdit /> <p>Editar Status / Responder</p>
                                     </button>
                                     <button onClick={() => { modalToggle(index); setType("Delete") }} className="delete">
                                         <AiFillDelete /> <p>Deletar</p>

@@ -8,7 +8,9 @@ import ModalMotion from "./ModalMotion";
 const ClientesModal = ({ isOpen, type, value, onClose }) => {
     const [loading, setLoading] = useState(false);
     const [cartegoryId, setCartegoryId] = useState('');
-
+    if (!value) {
+        return
+    }
     const data = value
     const info = data.result
     const id = data.id

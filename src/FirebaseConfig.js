@@ -84,7 +84,7 @@ onSnapshot(questionsRef, (snap) => {
     const id = doc.id;
     const final = { result, id };
     console.log("Questions: ", final);
-    state.Category.push(final);
+    state.Questions.push(final);
   });
 });
 // ==========================================
@@ -399,3 +399,26 @@ export function editUser(e, userId, setLoading, close) {
 // ==========================================
 // ======  Question Actions
 // ==========================================
+export async function editQuestion(event, id, setLoading, conclusion) {
+  event.preventDefault()
+  setLoading(true)
+  const docRef = doc(dataBase, 'Dúvidas', id)
+  const formData = new FormData(event.target);
+  const data = {};
+  formData.forEach((value, key) => {
+    data[key] = value;
+  });
+  updateDoc(docRef, data)
+  setLoading(false)
+  conclusion()
+  state.message = "Dúvida atualizada com sucesso!"
+}
+export function deleteQuestion(id, onClose) {
+  const docRef = doc(dataBase, 'Dúvidas', id)
+  deleteDoc(docRef)
+    .then(() => {
+      onClose()
+      state.message = "Dúvida excluida com sucesso!"
+    })
+    .catch(err => state.message = err.message)
+}
